@@ -20,6 +20,11 @@ function GM:PlayerInitialSpawn( ply )
 	ply:PrintMessage( HUD_PRINTTALK, ply:Nick() .. " has joined the game." )
 	ply:PrintMessage( HUD_PRINTTALK, "Press F1 to choose a team." )
 	
+	if ( ply:GetPData( "playerKills" ) == nil ) then
+		ply:SetNWInt( "playerKills", 0 )
+	else
+		ply:SetNWInt( "playerKills", ply:GetPData( "playerKills" ) )
+	end
 	if ( ply:GetPData( "playerLevel" ) == nil ) then
 		ply:SetNWInt( "playerLevel", 1 )
 	else
@@ -93,6 +98,7 @@ function GM:PlayerDeath( victim, inflictor, attacker )
 	
 	if attacker != victim then
 		attacker:SetNWInt( "playerExp", math.ceil( attacker:GetNWInt( "playerExp" ) + ( 100 * attacker:GetNWInt( "playerLevel" ) * 0.825 ) ) )
+		attacker:SetNWInt( "playerKills", attacker:GetNWInt( "playerKills" ) + 1 )
 	end
 	
 	checkForLevel( attacker )

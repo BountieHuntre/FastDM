@@ -320,7 +320,7 @@ function set_class( ply )
 		end
 	end
 	if class then
-		function class:OnKeyCodePressed( KEY_F1 ) class:Close() end
+		function class:OnKeyCodePressed( KEY_F2 ) class:Close() end
 	end
 end
 concommand.Add( "dm_class", set_class )
