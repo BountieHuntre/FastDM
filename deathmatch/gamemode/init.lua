@@ -28,6 +28,8 @@ function GM:PlayerInitialSpawn( ply )
 	else
 		ply:SetNWInt( "playerExp", ply:GetPData( "playerExp" ) )
 	end
+	
+	ply:ConCommand( "dm_start" )
 end
 
 function GM:PlayerSetModel( ply )
@@ -54,12 +56,14 @@ end
 function GM:PlayerShouldTakeDamage( victim, pl )
 	if victim:IsPlayer() then
 		if pl:IsPlayer() then
-			if pl == victim then
-				return true
-			elseif victim:Team() == 1 or pl:Team() == victim:Team() then
+			if victim:Team() == 1 then
 				return false
 			else
-				return true
+				if pl:Team() == victim:Team() then
+					return false
+				else
+					return true
+				end
 			end
 		else
 			return false
@@ -296,10 +300,6 @@ function resetlevel( ply )
 	ply:SetNWInt( "playerLevel", 1 )
 	ply:SetNWInt( "playerExp", 0 )
 	ply:SetNWInt( "playerMoney", 0 )
-	ply:SetNWInt( "hasM4", 0 )
-	ply:SetNWInt( "hasAK", 0 )
-	ply:SetNWInt( "hasDE", 0 )
-	ply:SetNWInt( "equipped", 0 )
 	ply:StripWeapons()
 	ply:Spawn()
 end
