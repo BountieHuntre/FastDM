@@ -42,7 +42,6 @@ function set_team( ply )
 		ready1.DoClick = function()
 			ply:ConCommand( "dm_team1" )
 			Ready:Close()
-			timer.Simple( 0.075, function() ply:ConCommand( "dm_class" ) end )
 		end
 	end
 	
@@ -64,8 +63,11 @@ function set_team( ply )
 		ready2.DoClick = function()
 			ply:ConCommand( "dm_team2" )
 			Ready:Close()
-			timer.Simple( 0.075, function() ply:ConCommand( "dm_class" ) end )
 		end
+	end
+	
+	if Ready then
+		function Ready:OnKeyCodePressed( KEY_F1 ) Ready:Close() end
 	end
 end
 concommand.Add( "dm_start", set_team )
@@ -316,6 +318,9 @@ function set_class( ply )
 				ply:PrintMessage( HUD_PRINTTALK, "You have not joined a team yet." )
 			end
 		end
+	end
+	if class then
+		function class:OnKeyCodePressed( KEY_F1 ) class:Close() end
 	end
 end
 concommand.Add( "dm_class", set_class )

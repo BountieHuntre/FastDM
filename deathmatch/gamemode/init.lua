@@ -6,6 +6,8 @@ AddCSLuaFile( "shared.lua" )
 
 include( "shared.lua" )
 
+local open = false
+
 function GM:PlayerSpawn( ply )
 	ply:RemoveAllAmmo()
 	self.BaseClass:PlayerSpawn( ply )
@@ -59,11 +61,18 @@ function GM:PlayerShouldTakeDamage( victim, pl )
 			if victim:Team() == 1 then
 				return false
 			else
-				if pl:Team() == victim:Team() then
-					return false
-				else
+				if victim:SteamID() == pl:SteamID() then
 					return true
+				else
+					if pl:Team() == victim:Team() then
+						return false
+					else
+						return true
+					end
 				end
+			end
+			if pl == victim then
+				return true
 			end
 		else
 			return false
@@ -83,7 +92,7 @@ function GM:PlayerDeath( victim, inflictor, attacker )
 	self.BaseClass.PlayerDeath(self, victim, inflictor, attacker)
 	
 	if attacker != victim then
-		attacker:SetNWInt( "playerExp", math.ceil( attacker:GetNWInt( "playerExp" ) * ( 100 * attacker:GetNWInt( "playerLevel" ) * 0.825 ) ) )
+		attacker:SetNWInt( "playerExp", math.ceil( attacker:GetNWInt( "playerExp" ) + ( 100 * attacker:GetNWInt( "playerLevel" ) * 0.825 ) ) )
 	end
 	
 	checkForLevel( attacker )

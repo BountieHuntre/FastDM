@@ -1,5 +1,13 @@
 include( "shared.lua" )
 
+surface.CreateFont( "Reg", {
+	font = "Trebuchet24",
+	extended = false,
+	size = 24,
+	weight = 550,
+	antialias = true
+} )
+
 local scoreboard = nil
 local pList = nil
 
@@ -35,10 +43,10 @@ function GM:ScoreboardShow()
 				draw.RoundedBox( 0, 0, 0, pPanel:GetWide(), pPanel:GetTall(), team.GetColor( v:Team() ) )
 				draw.RoundedBox( 0, 0, 49, pPanel:GetWide(), 1, Color( 255, 255, 255, 255 ) )
 				
-				draw.SimpleText( v:GetName(), "Trebuchet24", 20, 13, Color( 0, 0, 0 ) )
-				draw.SimpleText( "Kills: " .. v:Frags(), "Trebuchet24", pList:GetWide() / 1.65, 13, Color( 0, 0, 0 ), TEXT_ALIGN_CENTER )
-				draw.SimpleText( "Deaths: " .. v:Deaths(), "Trebuchet24", pList:GetWide() / 1.28, 13, Color( 0, 0, 0 ), TEXT_ALIGN_CENTER )
-				draw.SimpleText( "Ping: " .. v:Ping(), "Trebuchet24", pList:GetWide() - 20, 13, Color( 0, 0, 0 ), TEXT_ALIGN_RIGHT )
+				draw.SimpleText( v:GetName(), "Reg", 20, 13, Color( 0, 0, 0 ) )
+				draw.SimpleText( "Kills: " .. v:Frags(), "Reg", pList:GetWide() / 1.65, 13, Color( 0, 0, 0 ), TEXT_ALIGN_CENTER )
+				draw.SimpleText( "Deaths: " .. v:Deaths(), "Reg", pList:GetWide() / 1.28, 13, Color( 0, 0, 0 ), TEXT_ALIGN_CENTER )
+				draw.SimpleText( "Ping: " .. v:Ping(), "Reg", pList:GetWide() - 20, 13, Color( 0, 0, 0 ), TEXT_ALIGN_RIGHT )
 			end
 		end
 	
