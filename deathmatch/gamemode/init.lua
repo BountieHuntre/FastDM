@@ -172,9 +172,9 @@ function GM:PlayerLoadout( ply )
 	end
 	
 	if ply:Team() == 9 then
-		ply:Give( "m9k_remington7615p" )
-		ply:SetAmmo( 40, ply:GetWeapon( "m9k_remington7615p" ):GetPrimaryAmmoType() )
-		ply:SelectWeapon( "m9k_remington7615p" )
+		ply:Give( "m9k_m24" )
+		ply:SetAmmo( 20, ply:GetWeapon( "m9k_m24" ):GetPrimaryAmmoType() )
+		ply:SelectWeapon( "m9k_m24" )
 		
 		ply:Give( "m9k_sig_p229r" )
 		ply:SetAmmo( 48, ply:GetWeapon( "m9k_sig_p229r" ):GetPrimaryAmmoType() )
@@ -224,8 +224,10 @@ function showammo( ply )
 end
 concommand.Add( "showammo", showammo )
 
+local teamCompCT = team.NumPlayers( 3 ) + team.NumPlayers( 4 ) + team.NumPlayers( 5 ) + team.NumPlayers( 8 ) + team.NumPlayers( 10 )
+local teamCompT = team.NumPlayers( 2 ) + team.NumPlayers( 6 ) + team.NumPlayers( 7 ) + team.NumPlayers( 9 ) + team.NumPlayers( 11 ) + team.NumPlayers( 12 )
 function dm_team1( ply )
-	if ( team.NumPlayers( 3 ) + team.NumPlayers( 4 ) + team.NumPlayers( 5 ) + team.NumPlayers( 8 ) + team.NumPlayers( 10 ) ) > ( team.NumPlayers( 2 ) + team.NumPlayers( 6 ) + team.NumPlayers( 7 ) + team.NumPlayers( 9 ) + team.NumPlayers( 11 ) + team.NumPlayers( 12 ) ) then
+	if ( teamCompCT ) > ( teamCompT ) then
 		ply:PrintMessage( HUD_PRINTTALK, "There are too many players on this team." )
 	else
 		ply:SetTeam( 3 )
