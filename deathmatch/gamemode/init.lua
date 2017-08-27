@@ -40,9 +40,9 @@ function GM:PlayerInitialSpawn( ply )
 end
 
 function GM:PlayerSetModel( ply )
-	if ( ply:Team() == 2 ) then
+	if ( ply:Team() == 2 or ply:Team() == 21 or ply:Team() == 22 or ply:Team() == 23 or ply:Team() == 24 or ply:Team() == 25 ) then
 		ply:SetModel( "models/player/phoenix.mdl" )
-	elseif ( ply:Team() == 3 ) then
+	elseif ( ply:Team() == 3 or ply:Team() == 4 or ply:Team() == 5 or ply:Team() == 6 or ply:Team() == 7 ) then
 		ply:SetModel( "models/player/riot.mdl" )
 	end
 end
@@ -72,12 +72,17 @@ function GM:PlayerShouldTakeDamage( victim, pl )
 					if pl:Team() == victim:Team() then
 						return false
 					else
-						return true
+						if ( 3 < tonumber( pl:Team() ) and tonumber( pl:Team() ) < 8 ) and ( 3 < tonumber( victim:Team() ) and tonumber( victim:Team() ) < 8 ) then
+							return false
+						else
+							if ( 20 < tonumber( pl:Team() ) and tonumber( pl:Team() ) < 26 ) and ( 20 < tonumber( victim:Team() ) and tonumber( victim:Team() ) < 26 ) then
+								return false
+							else
+								return true
+							end
+						end
 					end
 				end
-			end
-			if pl == victim then
-				return true
 			end
 		else
 			return false
@@ -105,7 +110,7 @@ function GM:PlayerDeath( victim, inflictor, attacker )
 end
 
 function GM:PlayerLoadout( ply )
-	if (ply:Team() == 1) or (ply:Team() == 2) or (ply:Team() == 3) or (ply:Team() == 12) then
+	if (ply:Team() == 1) or (ply:Team() == 2) or (ply:Team() == 3) or (ply:Team() == 25) then
 	else
 		ply:Give( "m9k_m61_frag" )
 		ply:SetAmmo( 0, ply:GetWeapon( "m9k_m61_frag" ):GetPrimaryAmmoType() )
@@ -115,86 +120,111 @@ function GM:PlayerLoadout( ply )
 	if ply:Team() == 4 then
 		ply:Give( "m9k_m4a1" )
 		ply:SetAmmo( 120, ply:GetWeapon( "m9k_m4a1" ):GetPrimaryAmmoType() )
-		ply:SelectWeapon( "m9k_m4a1" )
 		
 		ply:Give( "m9k_m92beretta" )
 		ply:SetAmmo( 60, ply:GetWeapon( "m9k_m92beretta" ):GetPrimaryAmmoType() )
+		
+		ply:SelectWeapon( "m9k_m4a1" )
 	end
 	
 	if ply:Team() == 5 then
 		ply:Give( "m9k_remington870" )
 		ply:SetAmmo( 32, ply:GetWeapon( "m9k_remington870" ):GetPrimaryAmmoType() )
-		ply:SelectWeapon( "m9k_remington870" )
 		
 		ply:Give( "m9k_m92beretta" )
 		ply:SetAmmo( 60, ply:GetWeapon( "m9k_m92beretta" ):GetPrimaryAmmoType() )
 		
 		ply:Give( "weapon_medkit" )
+		
+		ply:SelectWeapon( "m9k_remington870" )
 	end
 	
-	if ply:Team() == 8 then
+	if ply:Team() == 6 then
 		ply:Give( "m9k_m24" )
 		ply:SetAmmo( 20, ply:GetWeapon( "m9k_m24" ):GetPrimaryAmmoType() )
-		ply:SelectWeapon( "m9k_m24" )
 		
 		ply:Give( "m9k_m92beretta" )
 		ply:SetAmmo( 60, ply:GetWeapon( "m9k_m92beretta" ):GetPrimaryAmmoType() )
+		
+		ply:SelectWeapon( "m9k_m24" )
 	end
 	
-	if ply:Team() == 10 then
+	if ply:Team() == 7 then
 		ply:Give( "m9k_mp5" )
 		ply:SetAmmo( 120, ply:GetWeapon( "m9k_mp5" ):GetPrimaryAmmoType() )
-		ply:SelectWeapon( "m9k_mp5" )
 		
 		ply:Give( "m9k_matador" )
 		ply:SetAmmo( 2, ply:GetWeapon( "m9k_matador" ):GetPrimaryAmmoType() )
 		
 		ply:Give( "m9k_m92beretta" )
 		ply:SetAmmo( 60, ply:GetWeapon( "m9k_m92beretta" ):GetPrimaryAmmoType() )
+		
+		ply:SelectWeapon( "m9k_mp5" )
 	end
 	
-	if ply:Team() == 6 then
+	if ply:Team() == 8 then
+		ply:Give( "m9k_minigun" )
+		ply:SetAmmo( 0, ply:GetWeapon( "m9k_minigun" ):GetPrimaryAmmoType() )
+		
+		ply:Give( "m9k_orbital_strike" )
+		ply:SetAmmo( 0, ply:GetWeapon( "m9k_orbital_strike" ):GetPrimaryAmmoType() )
+		
+		ply:SelectWeapon( "m9k_minigun" )
+	end
+	
+	if ply:Team() == 21 then
 		ply:Give( "m9k_ak47" )
 		ply:SetAmmo( 120, ply:GetWeapon( "m9k_ak47" ):GetPrimaryAmmoType() )
-		ply:SelectWeapon( "m9k_ak47" )
 		
 		ply:Give( "m9k_sig_p229r" )
 		ply:SetAmmo( 48, ply:GetWeapon( "m9k_sig_p229r" ):GetPrimaryAmmoType() )
+		
+		ply:SelectWeapon( "m9k_ak47" )
 	end
 	
-	if ply:Team() == 7 then
+	if ply:Team() == 22 then
 		ply:Give( "m9k_1897winchester" )
 		ply:SetAmmo( 16, ply:GetWeapon( "m9k_1897winchester" ):GetPrimaryAmmoType() )
-		ply:SelectWeapon( "m9k_1897winchester" )
 		
 		ply:Give( "m9k_sig_p229r" )
 		ply:SetAmmo( 48, ply:GetWeapon( "m9k_sig_p229r" ):GetPrimaryAmmoType() )
+		
+		ply:Give( "weapon_medkit" )
+		
+		ply:SelectWeapon( "m9k_1897winchester" )
 	end
 	
-	if ply:Team() == 9 then
+	if ply:Team() == 23 then
 		ply:Give( "m9k_m24" )
 		ply:SetAmmo( 20, ply:GetWeapon( "m9k_m24" ):GetPrimaryAmmoType() )
-		ply:SelectWeapon( "m9k_m24" )
 		
 		ply:Give( "m9k_sig_p229r" )
 		ply:SetAmmo( 48, ply:GetWeapon( "m9k_sig_p229r" ):GetPrimaryAmmoType() )
+		
+		ply:SelectWeapon( "m9k_m24" )
 	end
 	
-	if ply:Team() == 11 then
+	if ply:Team() == 24 then
 		ply:Give( "m9k_uzi" )
 		ply:SetAmmo( 128, ply:GetWeapon( "m9k_uzi" ):GetPrimaryAmmoType() )
-		ply:SelectWeapon( "m9k_uzi" )
 		
 		ply:Give( "m9k_rpg7" )
 		ply:SetAmmo( 2, ply:GetWeapon( "m9k_rpg7" ):GetPrimaryAmmoType() )
 		
 		ply:Give( "m9k_sig_p229r" )
 		ply:SetAmmo( 48, ply:GetWeapon( "m9k_sig_p229r" ):GetPrimaryAmmoType() )
+		
+		ply:SelectWeapon( "m9k_uzi" )
 	end
 	
-	if ply:Team() == 12 then
-		ply:Give( "m9k_ied_detonator" )
-		ply:SetAmmo( 0, ply:GetWeapon( "m9k_ied_detonator" ):GetPrimaryAmmoType() )
+	if ply:Team() == 25 then
+		ply:Give( "m9k_minigun" )
+		ply:SetAmmo( 0, ply:GetWeapon( "m9k_minigun" ):GetPrimaryAmmoType() )
+		
+		ply:Give( "m9k_orbital_strike" )
+		ply:SetAmmo( 0, ply:GetWeapon( "m9k_orbital_strike" ):GetPrimaryAmmoType() )
+		
+		ply:SelectWeapon( "m9k_minigun" )
 	end
 end
 
@@ -224,17 +254,72 @@ function showammo( ply )
 end
 concommand.Add( "showammo", showammo )
 
+function resetall( ply )
+	if ply:IsAdmin() or ply:IsSuperAdmin() then
+		for k, v in pairs( player.GetAll() ) do
+			v:SetPData( "playerLevel", 0 )
+			v:SetPData( "playerExp", 0 )
+			v:SetPData( "playerMoney", 0 )
+		end
+	end
+end
+concommand.Add( "resetall", resetall )
+
+function setlevel( ply, cmd, args )
+	if ply:IsAdmin() or ply:IsSuperAdmin() then
+		local target = NULL
+		for k, v in pairs( player.GetAll() ) do
+			if ( string.find( string.lower( v:GetName() ), string.lower( args[1] ) ) != nil ) then
+				target = v
+				break
+			end
+		end
+		if IsValid( target ) then
+			if tonumber( args[2] ) > 0 then
+				target:SetNWInt( "playerLevel", args[2] )
+			else
+				print( "Second argument must be greater than 0. " )
+			end
+		else
+			print( "Couldn't find target with partial name: ", args[1] )
+		end
+	end
+end
+concommand.Add( "setlevel", setlevel )
+
+function setteam( ply, cmd, args )
+	if ply:IsAdmin() or ply:IsSuperAdmin() then
+		local target = NULL
+		for k, v in pairs( player.GetAll() ) do
+			if ( string.find( string.lower( v:GetName() ), string.lower( args[1] ) ) != nil ) then
+				target = v
+				break
+			end
+		end
+		if IsValid( target ) then
+			if tonumber( args[2] ) > 0 then
+				target:SetTeam( args[2] )
+				target:StripWeapons()
+				target:Spawn()
+			else
+				print( "Second argument must be greater than 0. " )
+			end
+		else
+			print( "Couldn't find target with partial name: ", args[1] )
+		end
+	end
+end
+concommand.Add( "setteam", setteam )
+
 local teamCompCT = team.NumPlayers( 3 ) + team.NumPlayers( 4 ) + team.NumPlayers( 5 ) + team.NumPlayers( 8 ) + team.NumPlayers( 10 )
 local teamCompT = team.NumPlayers( 2 ) + team.NumPlayers( 6 ) + team.NumPlayers( 7 ) + team.NumPlayers( 9 ) + team.NumPlayers( 11 ) + team.NumPlayers( 12 )
 function dm_team1( ply )
-	if ( teamCompCT ) > ( teamCompT ) then
-		ply:PrintMessage( HUD_PRINTTALK, "There are too many players on this team." )
-	else
-		ply:SetTeam( 3 )
-		ply:StripWeapons()
-		PrintMessage( HUD_PRINTTALK, ply:GetName() .. " has joined Counter Terrorists." )
-		ply:Spawn()
-	end
+	ply:SetTeam( 3 )
+	ply:StripWeapons()
+	PrintMessage( HUD_PRINTTALK, ply:GetName() .. " has joined Counter Terrorists." )
+	ply:Spawn()
+	ply:SetMaxHealth( 100 )
+	ply:SetHealth( 100 )
 end
 concommand.Add( "dm_team1", dm_team1 )
 
@@ -242,6 +327,8 @@ function dm_team1_class1( ply )
 	ply:SetTeam( 4 )
 	ply:StripWeapons()
 	ply:Spawn()
+	ply:SetMaxHealth( 100 )
+	ply:SetHealth( 100 )
 end
 concommand.Add( "dm_team1_class1", dm_team1_class1 )
 
@@ -249,67 +336,90 @@ function dm_team1_class2( ply )
 	ply:SetTeam( 5 )
 	ply:StripWeapons()
 	ply:Spawn()
+	ply:SetMaxHealth( 100 )
+	ply:SetHealth( 100 )
 end
 concommand.Add( "dm_team1_class2", dm_team1_class2 )
 
 function dm_team1_class3( ply )
-	ply:SetTeam( 8 )
+	ply:SetTeam( 6 )
 	ply:StripWeapons()
 	ply:Spawn()
+	ply:SetMaxHealth( 100 )
+	ply:SetHealth( 100 )
 end
 concommand.Add( "dm_team1_class3", dm_team1_class3 )
 
 function dm_team1_class4( ply )
-	ply:SetTeam( 10 )
+	ply:SetTeam( 7 )
 	ply:StripWeapons()
 	ply:Spawn()
+	ply:SetMaxHealth( 100 )
+	ply:SetHealth( 100 )
 end
 concommand.Add( "dm_team1_class4", dm_team1_class4 )
 
+function dm_team1_class5( ply )
+	ply:SetTeam( 8 )
+	ply:StripWeapons()
+	ply:Spawn()
+	ply:SetMaxHealth( 300 )
+	ply:SetHealth( 300 )
+end
+concommand.Add( "dm_team1_class5", dm_team1_class5 )
+
 function dm_team2( ply )
-	if ( team.NumPlayers( 2 ) + team.NumPlayers( 6 ) + team.NumPlayers( 7 ) + team.NumPlayers( 9 ) + team.NumPlayers( 11 ) + team.NumPlayers( 12 ) ) > ( team.NumPlayers( 3 ) + team.NumPlayers( 4 ) + team.NumPlayers( 5 ) + team.NumPlayers( 8 ) + team.NumPlayers( 10 ) ) then
-		ply:PrintMessage( HUD_PRINTTALK, "There are too many players on this team." )
-	else
-		ply:SetTeam( 2 )
-		ply:StripWeapons()
-		PrintMessage( HUD_PRINTTALK, ply:GetName() .. " has joined Terrorists." )
-		ply:Spawn()
-	end
+	ply:SetTeam( 2 )
+	ply:StripWeapons()
+	PrintMessage( HUD_PRINTTALK, ply:GetName() .. " has joined Terrorists." )
+	ply:Spawn()
+	ply:SetMaxHealth( 100 )
+	ply:SetHealth( 100 )
 end
 concommand.Add( "dm_team2", dm_team2 )
 
 function dm_team2_class1( ply )
-	ply:SetTeam( 6 )
+	ply:SetTeam( 21 )
 	ply:StripWeapons()
 	ply:Spawn()
+	ply:SetMaxHealth( 100 )
+	ply:SetHealth( 100 )
 end
 concommand.Add( "dm_team2_class1", dm_team2_class1 )
 
 function dm_team2_class2( ply )
-	ply:SetTeam( 7 )
+	ply:SetTeam( 22 )
 	ply:StripWeapons()
 	ply:Spawn()
+	ply:SetMaxHealth( 100 )
+	ply:SetHealth( 100 )
 end
 concommand.Add( "dm_team2_class2", dm_team2_class2 )
 
 function dm_team2_class3( ply )
-	ply:SetTeam( 9 )
+	ply:SetTeam( 23 )
 	ply:StripWeapons()
 	ply:Spawn()
+	ply:SetMaxHealth( 100 )
+	ply:SetHealth( 100 )
 end
 concommand.Add( "dm_team2_class3", dm_team2_class3 )
 
 function dm_team2_class4( ply )
-	ply:SetTeam( 11 )
+	ply:SetTeam( 24 )
 	ply:StripWeapons()
 	ply:Spawn()
+	ply:SetMaxHealth( 100 )
+	ply:SetHealth( 100 )
 end
 concommand.Add( "dm_team2_class4", dm_team2_class4 )
 
 function dm_team2_class5( ply )
-	ply:SetTeam( 12 )
+	ply:SetTeam( 25 )
 	ply:StripWeapons()
 	ply:Spawn()
+	ply:SetMaxHealth( 300 )
+	ply:SetHealth( 300 )
 end
 concommand.Add( "dm_team2_class5", dm_team2_class5 )
 

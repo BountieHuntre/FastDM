@@ -16,13 +16,17 @@ function HUD()
 	//killcount box
 	if ply:Team() == 1 then
 		draw.RoundedBox( 0, ScrW() - 300, 0, 300, 100, Color( 30, 30, 30, 190 ) )
-	elseif ply:Team() == 2 or ply:Team() == 6 or ply:Team() == 7 or ply:Team() == 9 or ply:Team() == 11 or ply:Team() == 12 then
+	elseif ply:Team() == 2 or ply:Team() == 21 or ply:Team() == 22 or ply:Team() == 23 or ply:Team() == 24 or ply:Team() == 25 then
 		draw.RoundedBox( 0, ScrW() - 300, 0, 300, 100, Color( 255, 175, 0, 150 ) )
 	else
 		draw.RoundedBox( 0, ScrW() - 300, 0, 300, 100, Color( 21, 80, 205, 150 ) )
 	end
 	draw.SimpleText( "Kills:", "Trebuchet18", ScrW() - 290, 5, Color( 255, 255, 255, 255 ) )
 	draw.SimpleText( ply:GetNWInt( "playerKills" ), "BIG_T", ScrW() - 10, 35, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT )
+	
+	if ply:Team() == 1 then
+		draw.SimpleText( "Press F1 to select your team!", "BIG_T", ScrW() / 2, ScrH() / 8, Color( 255, 50, 225, 255 ), TEXT_ALIGN_CENTER )
+	end
 	
 	if ply:Team() == 2 or ply:Team() == 3 then
 		draw.SimpleText( "Press F2 to select your class!", "BIG_T", ScrW() / 2, ScrH() / 8, Color( 255, 50, 225, 255 ), TEXT_ALIGN_CENTER )
@@ -31,20 +35,20 @@ function HUD()
 	//stats box
 	if ply:Team() == 1 then
 		draw.RoundedBox( 0, 5, ScrH() - 105, 250, 100, Color( 30, 30, 30, 190 ) )
-	elseif ply:Team() == 2 or ply:Team() == 6 or ply:Team() == 7 or ply:Team() == 9 or ply:Team() == 11 or ply:Team() == 12 then
+	elseif ply:Team() == 2 or ply:Team() == 21 or ply:Team() == 22 or ply:Team() == 23 or ply:Team() == 24 or ply:Team() == 25 then
 		draw.RoundedBox( 0, 5, ScrH() - 105, 250, 100, Color( 255, 175, 0, 150 ) )
 	else
 		draw.RoundedBox( 0, 5, ScrH() - 105, 250, 100, Color( 21, 80, 205, 150 ) )
 	end
 	
 	//health box
-	draw.RoundedBox( 0, 10, ScrH() - 100, 240 * ply:Health() / 100, 90, Color( 255, 0, 0, 255 ) )
+	draw.RoundedBox( 0, 10, ScrH() - 100, 240 * ply:Health() / LocalPlayer():GetMaxHealth(), 90, Color( 255, 0, 0, 255 ) )
 	draw.SimpleText( ply:Health(), "BIG_T", 240, ScrH() - 87, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT )
 	
 	//weapon box
 	if ply:Team() == 1 then
 		draw.RoundedBox( 0, ScrW() - 230, ScrH() - 105, 225, 100, Color( 30, 30, 30, 190 ) )
-	elseif ply:Team() == 2 or ply:Team() == 6 or ply:Team() == 7 or ply:Team() == 9 or ply:Team() == 11 or ply:Team() == 12 then
+	elseif ply:Team() == 2 or ply:Team() == 21 or ply:Team() == 22 or ply:Team() == 23 or ply:Team() == 24 or ply:Team() == 25 then
 		draw.RoundedBox( 0, ScrW() - 230, ScrH() - 105, 225, 100, Color( 255, 175, 0, 150 ) )
 	else
 		draw.RoundedBox( 0, ScrW() - 230, ScrH() - 105, 225, 100, Color( 21, 80, 205, 150 ) )
@@ -73,7 +77,7 @@ function HUD()
 	//also stats box
 	if ply:Team() == 1 then
 		draw.RoundedBox( 0, 5, ScrH() - 170, 250, 65, Color( 30, 30, 30, 190 ) )
-	elseif ply:Team() == 2 or ply:Team() == 6 or ply:Team() == 7 or ply:Team() == 9 or ply:Team() == 11 or ply:Team() == 12 then
+	elseif ply:Team() == 2 or ply:Team() == 21 or ply:Team() == 22 or ply:Team() == 23 or ply:Team() == 24 or ply:Team() == 25 then
 		draw.RoundedBox( 0, 5, ScrH() - 170, 250, 65, Color( 255, 175, 0, 150 ) )
 	else
 		draw.RoundedBox( 0, 5, ScrH() - 170, 250, 65, Color( 21, 80, 205, 150 ) )

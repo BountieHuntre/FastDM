@@ -33,7 +33,7 @@ function set_team( ply )
 	ready1.Paint = function()
 		draw.RoundedBox( 0, 0, 0, ready1:GetWide(), ready1:GetTall(), team.GetColor( 3 ) )
 	end
-	if ply:Team() == 3 or ply:Team() == 4 or ply:Team() == 5 or ply:Team() == 8 or ply:Team() == 10 then
+	if ply:Team() == 3 or ply:Team() == 4 or ply:Team() == 5 or ply:Team() == 6 or ply:Team() == 7 or ply:Team() == 8 then
 		ready1.DoClick = function()
 			Ready:Close()
 			ply:PrintMessage( HUD_PRINTTALK, "You are already on the Counter Terrorist team." )
@@ -54,7 +54,7 @@ function set_team( ply )
 	ready2.Paint = function()
 		draw.RoundedBox( 0, 0, 0, ready2:GetWide(), ready2:GetTall(), team.GetColor( 2 ) )
 	end
-	if ply:Team() == 2 or ply:Team() == 6 or ply:Team() == 7 or ply:Team() == 9 or ply:Team() == 11 then
+	if ply:Team() == 2 or ply:Team() == 21 or ply:Team() == 22 or ply:Team() == 23 or ply:Team() == 24 or ply:Team() == 25 then
 		ready2.DoClick = function()
 			Ready:Close()
 			ply:PrintMessage( HUD_PRINTTALK, "You are already on the Terrorist team." )
@@ -84,7 +84,7 @@ function set_class( ply )
 		draw.RoundedBox( 0, 0, 0, class:GetWide(), class:GetTall(), Color( 60, 60, 60, 255 ) )
 	end
 	class:MakePopup()
-	if ply:Team() == 2 or ply:Team() == 6 or ply:Team() == 7 or ply:Team() == 9 or ply:Team() == 11 or ply:Team() == 12 then
+	if ply:Team() == 2 or ply:Team() == 21 or ply:Team() == 22 or ply:Team() == 23 or ply:Team() == 24 or ply:Team() == 25 then
 		class1 = vgui.Create( "DButton", class )
 		class1:SetPos( 1, 1 )
 		class1:SetSize( class:GetWide() / 3 - 3, class:GetTall() / 2 - 3 )
@@ -94,12 +94,12 @@ function set_class( ply )
 		class1.Paint = function()
 			draw.RoundedBox( 0, 0, 0, class1:GetWide(), class1:GetTall(), team.GetColor( 2 ) )
 		end
-		if ply:Team() == 2 or ply:Team() == 7 or ply:Team() == 9 or ply:Team() == 11 or ply:Team() == 12 then
+		if ply:Team() == 2 or ply:Team() == 22 or ply:Team() == 23 or ply:Team() == 24 or ply:Team() == 25 then
 			class1.DoClick = function()
 				ply:ConCommand( "dm_team2_class1" )
 				class:Close()
 			end
-		elseif ply:Team() == 6 then
+		elseif ply:Team() == 21 then
 			class1.DoClick = function()
 				class:Close()
 				ply:PrintMessage( HUD_PRINTTALK, "You are the Assault class already." )
@@ -120,20 +120,34 @@ function set_class( ply )
 		class2.Paint = function()
 			draw.RoundedBox( 0, 0, 0, class2:GetWide(), class2:GetTall(), team.GetColor( 2 ) )
 		end
-		if ply:Team() == 2 or ply:Team() == 6 or ply:Team() == 9 or ply:Team() == 11 or ply:Team() == 12 then
-			class2.DoClick = function()
-				ply:ConCommand( "dm_team2_class2" )
-				class:Close()
-			end
-		elseif ply:Team() == 7 then
-			class2.DoClick = function()
-				class:Close()
-				ply:PrintMessage( HUD_PRINTTALK, "You are the Medic class already." )
+		
+		if tonumber( ply:GetNWInt( "playerLevel" ) ) >= 5 then
+			if ply:Team() == 3 or ply:Team() == 4 or ply:Team() == 6 or ply:Team() == 7 or ply:Team() == 8 then
+				class2.DoClick = function()
+					ply:ConCommand( "dm_team1_class2" )
+					class:Close()
+				end
+			elseif ply:Team() == 5 then
+				class2.DoClick = function()
+					class:Close()
+					ply:PrintMessage( HUD_PRINTTALK, "You are the Medic class already." )
+				end
+			else
+				class2.DoClick = function()
+					class:Close()
+					ply:PrintMessage( HUD_PRINTTALK, "You have not joined a team yet." )
+				end
 			end
 		else
-			class2.DoClick = function()
-				class:Close()
-				ply:PrintMessage( HUD_PRINTTALK, "You have not joined a team yet." )
+			mblocker = vgui.Create( "DLabel", class2 )
+			mblocker:SetPos( 0, 0 )
+			mblocker:SetSize( class2:GetWide(), class2:GetTall() )
+			mblocker:SetText( "You must be level 5." )
+			mblocker:SetFont( "Reg" )
+			mblocker:SetContentAlignment( 5 )
+			mblocker:SetTextColor( Color( 255, 255, 255, 255 ) )
+			mblocker.Paint = function()
+				draw.RoundedBox( 0, 0, 0, mblocker:GetWide(), mblocker:GetTall(), Color( 100, 100, 100, 240 ) )
 			end
 		end
 		
@@ -146,20 +160,34 @@ function set_class( ply )
 		class3.Paint = function()
 			draw.RoundedBox( 0, 0, 0, class3:GetWide(), class3:GetTall(), team.GetColor( 2 ) )
 		end
-		if ply:Team() == 2 or ply:Team() == 6 or ply:Team() == 7 or ply:Team() == 11 or ply:Team() == 12 then
-			class3.DoClick = function()
-				ply:ConCommand( "dm_team2_class3" )
-				class:Close()
-			end
-		elseif ply:Team() == 9 then
-			class3.DoClick = function()
-				class:Close()
-				ply:PrintMessage( HUD_PRINTTALK, "You are the Sniper class already." )
+		
+		if tonumber( ply:GetNWInt( "playerLevel" ) ) >= 9 then
+			if ply:Team() == 2 or ply:Team() == 21 or ply:Team() == 22 or ply:Team() == 24 or ply:Team() == 25 then
+				class3.DoClick = function()
+					ply:ConCommand( "dm_team2_class3" )
+					class:Close()
+				end
+			elseif ply:Team() == 24 then
+				class3.DoClick = function()
+					class:Close()
+					ply:PrintMessage( HUD_PRINTTALK, "You are the Sniper class already." )
+				end
+			else
+				class3.DoClick = function()
+					class:Close()
+					ply:PrintMessage( HUD_PRINTTALK, "You have not joined a team yet." )
+				end
 			end
 		else
-			class3.DoClick = function()
-				class:Close()
-				ply:PrintMessage( HUD_PRINTTALK, "You have not joined a team yet." )
+			snblocker = vgui.Create( "DLabel", class3 )
+			snblocker:SetPos( 0, 0 )
+			snblocker:SetSize( class3:GetWide(), class3:GetTall() )
+			snblocker:SetText( "You must be level 9." )
+			snblocker:SetFont( "Reg" )
+			snblocker:SetContentAlignment( 5 )
+			snblocker:SetTextColor( Color( 255, 255, 255, 255 ) )
+			snblocker.Paint = function()
+				draw.RoundedBox( 0, 0, 0, snblocker:GetWide(), snblocker:GetTall(), Color( 100, 100, 100, 240 ) )
 			end
 		end
 		
@@ -172,59 +200,87 @@ function set_class( ply )
 		class4.Paint = function()
 			draw.RoundedBox( 0, 0, 0, class4:GetWide(), class4:GetTall(), team.GetColor( 2 ) )
 		end
-		if ply:Team() == 2 or ply:Team() == 6 or ply:Team() == 7 or ply:Team() == 9 or ply:Team() == 12 then
-			class4.DoClick = function()
-				ply:ConCommand( "dm_team2_class4" )
-				class:Close()
-			end
-		elseif ply:Team() == 11 then
-			class4.DoClick = function()
-				class:Close()
-				ply:PrintMessage( HUD_PRINTTALK, "You are the Specialist class already." )
+		
+		if tonumber( ply:GetNWInt( "playerLevel" ) ) >= 18 then
+			if ply:Team() == 2 or ply:Team() == 21 or ply:Team() == 22 or ply:Team() == 23 or ply:Team() == 25 then
+				class4.DoClick = function()
+					ply:ConCommand( "dm_team2_class4" )
+					class:Close()
+				end
+			elseif ply:Team() == 24 then
+				class4.DoClick = function()
+					class:Close()
+					ply:PrintMessage( HUD_PRINTTALK, "You are the Specialist class already." )
+				end
+			else
+				class4.DoClick = function()
+					class:Close()
+					ply:PrintMessage( HUD_PRINTTALK, "You have not joined a team yet." )
+				end
 			end
 		else
-			class4.DoClick = function()
-				class:Close()
-				ply:PrintMessage( HUD_PRINTTALK, "You have not joined a team yet." )
+			lspblocker = vgui.Create( "DLabel", class4 )
+			lspblocker:SetPos( 0, 0 )
+			lspblocker:SetSize( class4:GetWide(), class4:GetTall() )
+			lspblocker:SetText( "Must be level 18." )
+			lspblocker:SetFont( "Reg" )
+			lspblocker:SetContentAlignment( 5 )
+			lspblocker:SetTextColor( Color( 255, 255, 255, 255 ) )
+			lspblocker.Paint = function()
+				draw.RoundedBox( 0, 0, 0, lspblocker:GetWide(), lspblocker:GetTall(), Color( 100, 100, 100, 240 ) )
 			end
 		end
 		
 		class5 = vgui.Create( "DButton", class )
 		class5:SetPos( class:GetWide() / 3 + class:GetWide() / 3 - 1, 1 )
 		class5:SetSize( class:GetWide() / 3, class:GetTall() / 2 - 3 )
-		class5:SetText( "Suicide Bomber" )
+		class5:SetText( "Juggernaut" )
 		class5:SetFont( "Reg" )
 		class5:SetTextColor( Color( 0, 0, 0, 255 ) )
 		class5.Paint = function()
 			draw.RoundedBox( 0, 0, 0, class5:GetWide(), class5:GetTall(), team.GetColor( 2 ) )
 		end
-		if ply:Team() == 2 or ply:Team() == 6 or ply:Team() == 7 or ply:Team() == 9 or ply:Team() == 11 then
-			class5.DoClick = function()
-				ply:ConCommand( "dm_team2_class5" )
-				class:Close()
-			end
-		elseif ply:Team() == 12 then
-			class5.DoClick = function()
-				class:Close()
-				ply:PrintMessage( HUD_PRINTTALK, "You are the Suicide Bomber class already." )
+		
+		if ply:IsAdmin() or ply:IsSuperAdmin() or ply:IsUserGroup("trusted") then
+			if ply:Team() == 2 or ply:Team() == 21 or ply:Team() == 22 or ply:Team() == 23 or ply:Team() == 24 then
+				class5.DoClick = function()
+					ply:ConCommand( "dm_team2_class5" )
+					class:Close()
+				end
+			elseif ply:Team() == 25 then
+				class5.DoClick = function()
+					class:Close()
+					ply:PrintMessage( HUD_PRINTTALK, "You are the Juggernaut class already." )
+				end
+			else
+				class5.DoClick = function()
+					class:Close()
+					ply:PrintMessage( HUD_PRINTTALK, "You have not joined a team yet." )
+				end
 			end
 		else
-			class5.DoClick = function()
-				class:Close()
-				ply:PrintMessage( HUD_PRINTTALK, "You have not joined a team yet." )
+			tblocker = vgui.Create( "DLabel", class5 )
+			tblocker:SetPos( 0, 0 )
+			tblocker:SetSize( class5:GetWide(), class5:GetTall() )
+			tblocker:SetText( "You must be \"Trusted.\"" )
+			tblocker:SetFont( "Reg" )
+			tblocker:SetContentAlignment( 5 )
+			tblocker:SetTextColor( Color( 255, 255, 255, 255 ) )
+			tblocker.Paint = function()
+				draw.RoundedBox( 0, 0, 0, tblocker:GetWide(), tblocker:GetTall(), Color( 100, 100, 100, 240 ) )
 			end
 		end
 	else
 		class1 = vgui.Create( "DButton", class )
 		class1:SetPos( 1, 1 )
-		class1:SetSize( class:GetWide() / 2 - 3, class:GetTall() / 2 - 3 )
+		class1:SetSize( class:GetWide() / 3 - 3, class:GetTall() / 2 - 3 )
 		class1:SetText( "Assault" )
 		class1:SetFont( "Reg" )
 		class1:SetTextColor( Color( 0, 0, 0, 255 ) )
 		class1.Paint = function()
 			draw.RoundedBox( 0, 0, 0, class1:GetWide(), class1:GetTall(), team.GetColor( 3 ) )
 		end
-		if ply:Team() == 3 or ply:Team() == 5 or ply:Team() == 8 or ply:Team() == 10 then
+		if ply:Team() == 3 or ply:Team() == 5 or ply:Team() == 6 or ply:Team() == 7 or ply:Team() == 8 then
 			class1.DoClick = function()
 				ply:ConCommand( "dm_team1_class1" )
 				class:Close()
@@ -250,46 +306,74 @@ function set_class( ply )
 		class2.Paint = function()
 			draw.RoundedBox( 0, 0, 0, class2:GetWide(), class2:GetTall(), team.GetColor( 3 ) )
 		end
-		if ply:Team() == 3 or ply:Team() == 4 or ply:Team() == 8 or ply:Team() == 10 then
-			class2.DoClick = function()
-				ply:ConCommand( "dm_team1_class2" )
-				class:Close()
-			end
-		elseif ply:Team() == 5 or ply:Team() == 7 then
-			class2.DoClick = function()
-				class:Close()
-				ply:PrintMessage( HUD_PRINTTALK, "You are the Marksman class already." )
+		
+		if tonumber( ply:GetNWInt( "playerLevel" ) ) >= 5 then
+			if ply:Team() == 3 or ply:Team() == 4 or ply:Team() == 6 or ply:Team() == 7 or ply:Team() == 8 then
+				class2.DoClick = function()
+					ply:ConCommand( "dm_team1_class2" )
+					class:Close()
+				end
+			elseif ply:Team() == 5 then
+				class2.DoClick = function()
+					class:Close()
+					ply:PrintMessage( HUD_PRINTTALK, "You are the Medic class already." )
+				end
+			else
+				class2.DoClick = function()
+					class:Close()
+					ply:PrintMessage( HUD_PRINTTALK, "You have not joined a team yet." )
+				end
 			end
 		else
-			class2.DoClick = function()
-				class:Close()
-				ply:PrintMessage( HUD_PRINTTALK, "You have not joined a team yet." )
+			mblocker = vgui.Create( "DLabel", class2 )
+			mblocker:SetPos( 0, 0 )
+			mblocker:SetSize( class2:GetWide(), class2:GetTall() )
+			mblocker:SetText( "You must be level 5." )
+			mblocker:SetFont( "Reg" )
+			mblocker:SetContentAlignment( 5 )
+			mblocker:SetTextColor( Color( 255, 255, 255, 255 ) )
+			mblocker.Paint = function()
+				draw.RoundedBox( 0, 0, 0, mblocker:GetWide(), mblocker:GetTall(), Color( 100, 100, 100, 240 ) )
 			end
 		end
 		
 		class3 = vgui.Create( "DButton", class )
-		class3:SetPos( class:GetWide() / 2, 1 )
-		class3:SetSize( class:GetWide() / 2 - 1, class:GetTall() / 2 - 3 )
+		class3:SetPos( class:GetWide() / 3, 1 )
+		class3:SetSize( class:GetWide() / 3 - 3, class:GetTall() / 2 - 3 )
 		class3:SetText( "Sniper" )
 		class3:SetFont( "Reg" )
 		class3:SetTextColor( Color( 0, 0, 0, 255 ) )
 		class3.Paint = function()
 			draw.RoundedBox( 0, 0, 0, class3:GetWide(), class3:GetTall(), team.GetColor( 3 ) )
 		end
-		if ply:Team() == 3 or ply:Team() == 4 or ply:Team() == 5 or ply:Team() == 10 then
-			class3.DoClick = function()
-				ply:ConCommand( "dm_team1_class3" )
-				class:Close()
-			end
-		elseif ply:Team() == 8 or ply:Team() == 9 then
-			class3.DoClick = function()
-				class:Close()
-				ply:PrintMessage( HUD_PRINTTALK, "You are the Sniper class already." )
+		
+		if tonumber( ply:GetNWInt( "playerLevel" ) ) >= 9 then
+			if ply:Team() == 3 or ply:Team() == 4 or ply:Team() == 5 or ply:Team() == 7 or ply:Team() == 8 then
+				class3.DoClick = function()
+					ply:ConCommand( "dm_team1_class3" )
+					class:Close()
+				end
+			elseif ply:Team() == 6 then
+				class3.DoClick = function()
+					class:Close()
+					ply:PrintMessage( HUD_PRINTTALK, "You are the Sniper class already." )
+				end
+			else
+				class3.DoClick = function()
+					class:Close()
+					ply:PrintMessage( HUD_PRINTTALK, "You have not joined a team yet." )
+				end
 			end
 		else
-			class3.DoClick = function()
-				class:Close()
-				ply:PrintMessage( HUD_PRINTTALK, "You have not joined a team yet." )
+			snblocker = vgui.Create( "DLabel", class3 )
+			snblocker:SetPos( 0, 0 )
+			snblocker:SetSize( class3:GetWide(), class3:GetTall() )
+			snblocker:SetText( "You must be level 9." )
+			snblocker:SetFont( "Reg" )
+			snblocker:SetContentAlignment( 5 )
+			snblocker:SetTextColor( Color( 255, 255, 255, 255 ) )
+			snblocker.Paint = function()
+				draw.RoundedBox( 0, 0, 0, snblocker:GetWide(), snblocker:GetTall(), Color( 100, 100, 100, 240 ) )
 			end
 		end
 		
@@ -302,20 +386,74 @@ function set_class( ply )
 		class4.Paint = function()
 			draw.RoundedBox( 0, 0, 0, class4:GetWide(), class4:GetTall(), team.GetColor( 3 ) )
 		end
-		if ply:Team() == 3 or ply:Team() == 4 or ply:Team() == 5 or ply:Team() == 8 then
-			class4.DoClick = function()
-				ply:ConCommand( "dm_team1_class4" )
-				class:Close()
-			end
-		elseif ply:Team() == 10 or ply:Team() == 11 then
-			class4.DoClick = function()
-				class:Close()
-				ply:PrintMessage( HUD_PRINTTALK, "You are the Specialist class already." )
+		
+		if tonumber( ply:GetNWInt( "playerLevel" ) ) >= 18 then
+			if ply:Team() == 3 or ply:Team() == 4 or ply:Team() == 5 or ply:Team() == 6 or ply:Team() == 8 then
+				class4.DoClick = function()
+					ply:ConCommand( "dm_team1_class4" )
+					class:Close()
+				end
+			elseif ply:Team() == 7 then
+				class4.DoClick = function()
+					class:Close()
+					ply:PrintMessage( HUD_PRINTTALK, "You are the Specialist class already." )
+				end
+			else
+				class4.DoClick = function()
+					class:Close()
+					ply:PrintMessage( HUD_PRINTTALK, "You have not joined a team yet." )
+				end
 			end
 		else
-			class4.DoClick = function()
-				class:Close()
-				ply:PrintMessage( HUD_PRINTTALK, "You have not joined a team yet." )
+			lspblocker = vgui.Create( "DLabel", class4 )
+			lspblocker:SetPos( 0, 0 )
+			lspblocker:SetSize( class4:GetWide(), class4:GetTall() )
+			lspblocker:SetText( "Must be level 18." )
+			lspblocker:SetFont( "Reg" )
+			lspblocker:SetContentAlignment( 5 )
+			lspblocker:SetTextColor( Color( 255, 255, 255, 255 ) )
+			lspblocker.Paint = function()
+				draw.RoundedBox( 0, 0, 0, lspblocker:GetWide(), lspblocker:GetTall(), Color( 100, 100, 100, 240 ) )
+			end
+		end
+		
+		class5 = vgui.Create( "DButton", class )
+		class5:SetPos( class:GetWide() / 3 + class:GetWide() / 3 - 1, 1 )
+		class5:SetSize( class:GetWide() / 3, class:GetTall() / 2 - 3 )
+		class5:SetText( "Juggernaut" )
+		class5:SetFont( "Reg" )
+		class5:SetTextColor( Color( 0, 0, 0, 255 ) )
+		class5.Paint = function()
+			draw.RoundedBox( 0, 0, 0, class5:GetWide(), class5:GetTall(), team.GetColor( 3 ) )
+		end
+		
+		if ply:IsAdmin() or ply:IsSuperAdmin() or ply:IsUserGroup("trusted") then
+			if ply:Team() == 3 or ply:Team() == 4 or ply:Team() == 5 or ply:Team() == 6 or ply:Team() == 7 then
+				class5.DoClick = function()
+					ply:ConCommand( "dm_team1_class5" )
+					class:Close()
+				end
+			elseif ply:Team() == 8 then
+				class5.DoClick = function()
+					class:Close()
+					ply:PrintMessage( HUD_PRINTTALK, "You are the Juggernaut class already." )
+				end
+			else
+				class5.DoClick = function()
+					class:Close()
+					ply:PrintMessage( HUD_PRINTTALK, "You have not joined a team yet." )
+				end
+			end
+		else
+			tblocker = vgui.Create( "DLabel", class5 )
+			tblocker:SetPos( 0, 0 )
+			tblocker:SetSize( class5:GetWide(), class5:GetTall() )
+			tblocker:SetText( "You must be \"Trusted.\"" )
+			tblocker:SetFont( "Reg" )
+			tblocker:SetContentAlignment( 5 )
+			tblocker:SetTextColor( Color( 255, 255, 255, 255 ) )
+			tblocker.Paint = function()
+				draw.RoundedBox( 0, 0, 0, tblocker:GetWide(), tblocker:GetTall(), Color( 100, 100, 100, 240 ) )
 			end
 		end
 	end
