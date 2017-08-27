@@ -1,10 +1,11 @@
 # FastDM
 This is a gamemode for Garry's Mod that is purely Team Deathmatch.
 
-# Changelog:
+# Changelog (8/27/2017):
 - Bug fixes
-- Changed HUD colors to match team colors
-- Added Kill Counter (suicide doesn't count against you)
+- **_Added a NEW class!_**
+- Experience and levels mean something now!
+- 
 
 # Features:
 - EXP System
