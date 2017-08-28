@@ -1,13 +1,5 @@
 include( "shared.lua" )
 
-surface.CreateFont( "Reg", {
-	font = "Trebuchet24",
-	extended = false,
-	size = 24,
-	weight = 550,
-	antialias = true
-} )
-
 local scoreboard = nil
 local pList = nil
 
@@ -44,6 +36,7 @@ function GM:ScoreboardShow()
 				draw.RoundedBox( 0, 0, 49, pPanel:GetWide(), 1, Color( 255, 255, 255, 255 ) )
 				
 				draw.SimpleText( v:GetName(), "Reg", 20, 13, Color( 0, 0, 0 ) )
+				draw.SimpleText( "Lvl "..v:GetNWInt( "playerLevel" ), "Reg", pList:GetWide() / 2.75, 13, Color( 0, 0, 0 ), TEXT_ALIGN_CENTER )
 				draw.SimpleText( "Kills: " .. v:Frags(), "Reg", pList:GetWide() / 1.65, 13, Color( 0, 0, 0 ), TEXT_ALIGN_CENTER )
 				draw.SimpleText( "Deaths: " .. v:Deaths(), "Reg", pList:GetWide() / 1.28, 13, Color( 0, 0, 0 ), TEXT_ALIGN_CENTER )
 				draw.SimpleText( "Ping: " .. v:Ping(), "Reg", pList:GetWide() - 20, 13, Color( 0, 0, 0 ), TEXT_ALIGN_RIGHT )

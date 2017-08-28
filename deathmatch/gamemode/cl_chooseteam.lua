@@ -8,10 +8,20 @@ surface.CreateFont( "Reg", {
 	antialias = true
 } )
 
+surface.CreateFont( "BIG_T", {
+	font = "Trebuchet24",
+	extended = false,
+	size = 60,
+	weight = 550,
+	antialias = true
+} )
+
 local Ready = nil
 local visible = true
 
 function set_team( ply )
+	local ply = LocalPlayer()
+
 	Ready = vgui.Create( "DFrame" )
 	Ready:SetPos( ScrW() / 4, ScrH() / 4 )
 	Ready:SetSize( ScrW() / 2, ScrH() / 2 )
@@ -73,6 +83,8 @@ end
 concommand.Add( "dm_start", set_team )
 
 function set_class( ply )
+	local ply = LocalPlayer()
+	
 	class = vgui.Create( "DFrame" )
 	class:SetPos( ScrW() / 4, ScrH() / 4 )
 	class:SetSize( ScrW() / 2, ScrH() / 2 )

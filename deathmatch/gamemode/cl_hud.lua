@@ -1,10 +1,4 @@
-surface.CreateFont( "BIG_T", {
-	font = "Trebuchet24",
-	extended = false,
-	size = 60,
-	weight = 550,
-	antialias = true
-} )
+include( "shared.lua" )
 	
 function HUD()
 	local ply = LocalPlayer()
@@ -85,6 +79,9 @@ function HUD()
 	draw.SimpleText( ply:GetNWInt( "playerLevel" ), "BIG_T", 245, ScrH() - 165, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT )
 	draw.SimpleText( "EXP: " .. ply:GetNWInt( "playerExp" ) .. " / " .. etl, "Trebuchet18", 15, ScrH() - 155, Color( 255, 255, 255, 255 ) )
 	draw.SimpleText( team.GetName( ply:Team() ), "Trebuchet18", 15, ScrH() - 130, Color( 255, 255, 255, 255 ) )
+	
+	//money
+	draw.SimpleText( "$"..ply:GetNWInt( "playerMoney" ), "Trebuchet18", ScrW() - 10, 5, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT )
 end
 hook.Add( "HUDPaint", "PlayerHUD", HUD )
 

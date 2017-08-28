@@ -2,6 +2,7 @@ AddCSLuaFile( "cl_init.lua" )
 AddCSLuaFile( "cl_scoreboard.lua" )
 AddCSLuaFile( "cl_chooseteam.lua" )
 AddCSLuaFile( "cl_hud.lua" )
+AddCSLuaFile( "cl_buymenu.lua" )
 AddCSLuaFile( "shared.lua" )
 
 include( "shared.lua" )
@@ -25,15 +26,29 @@ function GM:PlayerInitialSpawn( ply )
 	else
 		ply:SetNWInt( "playerKills", ply:GetPData( "playerKills" ) )
 	end
+	
 	if ( ply:GetPData( "playerLevel" ) == nil ) then
 		ply:SetNWInt( "playerLevel", 1 )
 	else
 		ply:SetNWInt( "playerLevel", ply:GetPData( "playerLevel" ) )
 	end
+	
 	if ( ply:GetPData( "playerExp" ) == nil ) then
 		ply:SetNWInt( "playerExp", 0 )
 	else
 		ply:SetNWInt( "playerExp", ply:GetPData( "playerExp" ) )
+	end
+	
+	if ( ply:GetPData( "playerMoney" ) == nil ) then
+		ply:SetNWInt( "playerMoney", 0 )
+	else
+		ply:SetNWInt( "playerMoney", ply:GetPData( "playerMoney" ) )
+	end
+	
+	if ( ply:GetPData( "C4" ) == nil ) then
+		ply:SetNWBool( "C4", false )
+	else
+		ply:SetNWBool( "C4", true )
 	end
 	
 	ply:ConCommand( "dm_start" )
@@ -58,6 +73,10 @@ end
 
 function GM:ShowTeam( ply )
 	ply:ConCommand( "dm_class" )
+end
+
+function GM:ShowSpare1( ply )
+	ply:ConCommand( "buymenu" )
 end
 
 function GM:PlayerShouldTakeDamage( victim, pl )
@@ -102,6 +121,7 @@ function GM:PlayerDeath( victim, inflictor, attacker )
 	self.BaseClass.PlayerDeath(self, victim, inflictor, attacker)
 	
 	if attacker != victim then
+		attacker:SetNWInt( "playerMoney", attacker:GetNWInt( "playerMoney" ) + ( 100 * ( victim:GetNWInt( "playerLevel" ) / 4 ) ) )
 		attacker:SetNWInt( "playerExp", math.ceil( attacker:GetNWInt( "playerExp" ) + ( 100 * attacker:GetNWInt( "playerLevel" ) * 0.825 ) ) )
 		attacker:SetNWInt( "playerKills", attacker:GetNWInt( "playerKills" ) + 1 )
 	end
@@ -109,9 +129,29 @@ function GM:PlayerDeath( victim, inflictor, attacker )
 	checkForLevel( attacker )
 end
 
+concommand.Add( "buyC4", function( sender, command, arguments ) 
+	if not sender:IsValid() then return end
+	local money = sender:GetNWInt( "playerMoney" )
+	if sender:GetNWBool( "C4" ) != true then
+		if money < 1000 then
+			sender:PrintMessage( HUD_PRINTTALK, "You do not have enough Money." )
+		elseif money >= 1000 then
+			sender:SetNWInt( "playerMoney", money - 1000 )
+			sender:SetNWBool( "C4", true )
+			sender:Give( "m9k_suicide_bomb" )
+			sender:SelectWeapon( "m9k_suicide_bomb" )
+		end
+	else
+		sender:Give( "m9k_suicide_bomb" )
+	end
+end)
+
 function GM:PlayerLoadout( ply )
 	if (ply:Team() == 1) or (ply:Team() == 2) or (ply:Team() == 3) or (ply:Team() == 25) then
 	else
+		if ply:GetNWBool( "C4" ) == true then
+			ply:Give( "m9k_suicide_bomb" )
+		end
 		ply:Give( "m9k_m61_frag" )
 		ply:SetAmmo( 0, ply:GetWeapon( "m9k_m61_frag" ):GetPrimaryAmmoType() )
 		ply:Give( "m9k_machete" )
@@ -232,6 +272,8 @@ function GM:PlayerDisconnected( ply )
 	ply:SetPData( "playerLevel", ply:GetNWInt( "playerLevel" ) )
 	ply:SetPData( "playerExp", ply:GetNWInt( "playerExp" ) )
 	ply:SetPData( "playerMoney", ply:GetNWInt( "playerMoney" ) )
+	ply:SetPData( "playerKills", ply:GetNWInt( "playerKills" ) )
+	ply:SetPData( "C4", ply:GetNWBool( "C4" ) )
 end
 
 function GM:ShutDown()
@@ -239,6 +281,8 @@ function GM:ShutDown()
 		v:SetPData( "playerLevel", v:GetNWInt( "playerLevel" ) )
 		v:SetPData( "playerExp", v:GetNWInt( "playerExp" ) )
 		v:SetPData( "playerMoney", v:GetNWInt( "playerMoney" ) )
+		v:SetPData( "playerKills", v:GetNWInt( "playerKills" ) )
+		v:SetPData( "C4", v:GetNWBool( "C4" ) )
 	end
 end
 
@@ -260,6 +304,11 @@ function resetall( ply )
 			v:SetPData( "playerLevel", 0 )
 			v:SetPData( "playerExp", 0 )
 			v:SetPData( "playerMoney", 0 )
+			v:SetPData( "C4", false )
+			v:SetNWInt( "playerLevel", 0 )
+			v:SetNWInt( "playerExp", 0 )
+			v:SetNWInt( "playerMoney", 0 )
+			v:SetNWBool( "C4", false )
 		end
 	end
 end
@@ -427,6 +476,7 @@ function resetlevel( ply )
 	ply:SetNWInt( "playerLevel", 1 )
 	ply:SetNWInt( "playerExp", 0 )
 	ply:SetNWInt( "playerMoney", 0 )
+	ply:SetNWBool( "C4", false )
 	ply:StripWeapons()
 	ply:Spawn()
 end
