@@ -301,11 +301,11 @@ concommand.Add( "showammo", showammo )
 function resetall( ply )
 	if ply:IsAdmin() or ply:IsSuperAdmin() then
 		for k, v in pairs( player.GetAll() ) do
-			v:SetPData( "playerLevel", 0 )
+			v:SetPData( "playerLevel", 1 )
 			v:SetPData( "playerExp", 0 )
 			v:SetPData( "playerMoney", 0 )
 			v:SetPData( "C4", false )
-			v:SetNWInt( "playerLevel", 0 )
+			v:SetNWInt( "playerLevel", 1 )
 			v:SetNWInt( "playerExp", 0 )
 			v:SetNWInt( "playerMoney", 0 )
 			v:SetNWBool( "C4", false )
