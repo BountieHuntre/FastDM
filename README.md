@@ -1,7 +1,14 @@
-# FastDM
+## FastDM
 This is a gamemode for Garry's Mod that is purely Team Deathmatch.
 
-# Changelog (8/27/2017):
+### Changelog (8/28/2017):
+- Bug fixes
+- Added **_BUY MENU_**!
+  - Accessible via the F3 key
+  - C4 is only available for purchase
+- Finished **_$$$_** system!
+
+### Changelog (8/27/2017):
 - Bug fixes
   - Fixed friendly fire
 - **_Added a NEW class!_**
@@ -13,7 +20,7 @@ This is a gamemode for Garry's Mod that is purely Team Deathmatch.
 - Experience and levels mean something now!
   - Some classes require a minimum level to play
 
-# Features:
+### Features:
 - EXP System
 - M9K Weapons
 - Standard Counter Strike: Source Models
@@ -24,7 +31,7 @@ This is a gamemode for Garry's Mod that is purely Team Deathmatch.
 - Custom Menus
 - Custom Scoreboard
 
-# Features to come:
+### Features to come:
 - Money System with Buy Menu
 - Custom Classes
 - More as I think of them
