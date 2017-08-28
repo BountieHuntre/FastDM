@@ -82,7 +82,7 @@ end
 function GM:PlayerShouldTakeDamage( victim, pl )
 	if victim:IsPlayer() then
 		if pl:IsPlayer() then
-			if victim:Team() == 1 then
+			if victim:Team() == 1 or victim:Team() == 2 or victim:Team() == 3 then
 				return false
 			else
 				if victim:SteamID() == pl:SteamID() then
@@ -133,10 +133,10 @@ concommand.Add( "buyC4", function( sender, command, arguments )
 	if not sender:IsValid() then return end
 	local money = sender:GetNWInt( "playerMoney" )
 	if sender:GetNWBool( "C4" ) != true then
-		if money < 1000 then
+		if tonumber( money ) < 1000 then
 			sender:PrintMessage( HUD_PRINTTALK, "You do not have enough Money." )
-		elseif money >= 1000 then
-			sender:SetNWInt( "playerMoney", money - 1000 )
+		elseif tonumber( money ) >= 1000 then
+			sender:SetNWInt( "playerMoney", tonumber( money ) - 1000 )
 			sender:SetNWBool( "C4", true )
 			sender:Give( "m9k_suicide_bomb" )
 			sender:SelectWeapon( "m9k_suicide_bomb" )
