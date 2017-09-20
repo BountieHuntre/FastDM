@@ -9,15 +9,40 @@ include( "shared.lua" )
 
 local open = false
 
+PLAYER = FindMetaTable( "Player" )
+
+function PLAYER:Unassigned()
+	if ( self:Team() == TEAM_UNASSIGNED or self:Team() == TEAM_SPECTATOR or self:Team() == 1 or self:Team() == 2 or self:Team() == 3 ) then
+		return true
+	end
+	
+	return false
+end
+
+function PLAYER:CanRespawn()
+	if ( self:Unassigned() ) then
+		return false
+	end
+	
+	return true
+end
+
 function GM:PlayerSpawn( ply )
+	if ( ply:Unassigned() ) then
+		ply:StripAmmo()
+		ply:StripWeapons()
+		ply:Spectate( OBS_MODE_ROAMING )
+		
+		return false
+	else
+		ply:UnSpectate()
+	end
 	ply:RemoveAllAmmo()
 	self.BaseClass:PlayerSpawn( ply )
-	
 end
 
 function GM:PlayerInitialSpawn( ply )
-	ply:SetTeam( 1 )
-	ply:SetModel( "models/player/group01/male_01.mdl" )
+	GAMEMODE:PlayerSpawnAsSpectator( ply )
 	ply:PrintMessage( HUD_PRINTTALK, ply:Nick() .. " has joined the game." )
 	ply:PrintMessage( HUD_PRINTTALK, "Press F1 to choose a team." )
 	
@@ -55,9 +80,9 @@ function GM:PlayerInitialSpawn( ply )
 end
 
 function GM:PlayerSetModel( ply )
-	if ( ply:Team() == 2 or ply:Team() == 21 or ply:Team() == 22 or ply:Team() == 23 or ply:Team() == 24 or ply:Team() == 25 ) then
+	if ( ply:Team() > 20 and ply:Team() < 26 ) then
 		ply:SetModel( "models/player/phoenix.mdl" )
-	elseif ( ply:Team() == 3 or ply:Team() == 4 or ply:Team() == 5 or ply:Team() == 6 or ply:Team() == 7 ) then
+	elseif ( ply:Team() > 3 and ply:Team() < 9 ) then
 		ply:SetModel( "models/player/riot.mdl" )
 	end
 end
@@ -119,6 +144,7 @@ end
 
 function GM:PlayerDeath( victim, inflictor, attacker )
 	self.BaseClass.PlayerDeath(self, victim, inflictor, attacker)
+	if ( victim:Unassigned() ) then return end
 	
 	if attacker != victim then
 		attacker:SetNWInt( "playerMoney", attacker:GetNWInt( "playerMoney" ) + ( 100 * ( victim:GetNWInt( "playerLevel" ) / 4 ) ) )
@@ -127,6 +153,12 @@ function GM:PlayerDeath( victim, inflictor, attacker )
 	end
 	
 	checkForLevel( attacker )
+end
+
+function GM:CanPlayerSuicide( ply )
+	if ply:Team() == TEAM_SPECTATOR or ply:Team() == TEAM_UNASSIGNED or ply:Team() == 1 or ply:Team() == 2 or ply:Team() == 3 then
+		return false
+	end
 end
 
 concommand.Add( "buyC4", function( sender, command, arguments ) 

@@ -7,17 +7,6 @@ function HUD()
 		return
 	end
 	
-	//killcount box
-	if ply:Team() == 1 then
-		draw.RoundedBox( 0, ScrW() - 300, 0, 300, 100, Color( 30, 30, 30, 190 ) )
-	elseif ply:Team() == 2 or ply:Team() == 21 or ply:Team() == 22 or ply:Team() == 23 or ply:Team() == 24 or ply:Team() == 25 then
-		draw.RoundedBox( 0, ScrW() - 300, 0, 300, 100, Color( 255, 175, 0, 150 ) )
-	else
-		draw.RoundedBox( 0, ScrW() - 300, 0, 300, 100, Color( 21, 80, 205, 150 ) )
-	end
-	draw.SimpleText( "Kills:", "Trebuchet18", ScrW() - 290, 5, Color( 255, 255, 255, 255 ) )
-	draw.SimpleText( ply:GetNWInt( "playerKills" ), "BIG_T", ScrW() - 10, 35, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT )
-	
 	if ply:Team() == 1 then
 		draw.SimpleText( "Press F1 to select your team!", "BIG_T", ScrW() / 2, ScrH() / 8, Color( 255, 50, 225, 255 ), TEXT_ALIGN_CENTER )
 	end
@@ -26,10 +15,19 @@ function HUD()
 		draw.SimpleText( "Press F2 to select your class!", "BIG_T", ScrW() / 2, ScrH() / 8, Color( 255, 50, 225, 255 ), TEXT_ALIGN_CENTER )
 	end
 	
+	//killcount box
+	if ply:Team() == TEAM_SPECTATOR or ply:Team() == TEAM_UNASSIGNED or ply:Team() == 2 or ply:Team() == 3 then
+		return
+	elseif ply:Team() == 21 or ply:Team() == 22 or ply:Team() == 23 or ply:Team() == 24 or ply:Team() == 25 then
+		draw.RoundedBox( 0, ScrW() - 300, 0, 300, 100, Color( 255, 175, 0, 150 ) )
+	else
+		draw.RoundedBox( 0, ScrW() - 300, 0, 300, 100, Color( 21, 80, 205, 150 ) )
+	end
+	draw.SimpleText( "Kills:", "Trebuchet18", ScrW() - 290, 5, Color( 255, 255, 255, 255 ) )
+	draw.SimpleText( ply:GetNWInt( "playerKills" ), "BIG_T", ScrW() - 10, 35, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT )
+	
 	//stats box
-	if ply:Team() == 1 then
-		draw.RoundedBox( 0, 5, ScrH() - 105, 250, 100, Color( 30, 30, 30, 190 ) )
-	elseif ply:Team() == 2 or ply:Team() == 21 or ply:Team() == 22 or ply:Team() == 23 or ply:Team() == 24 or ply:Team() == 25 then
+	if ply:Team() == 21 or ply:Team() == 22 or ply:Team() == 23 or ply:Team() == 24 or ply:Team() == 25 then
 		draw.RoundedBox( 0, 5, ScrH() - 105, 250, 100, Color( 255, 175, 0, 150 ) )
 	else
 		draw.RoundedBox( 0, 5, ScrH() - 105, 250, 100, Color( 21, 80, 205, 150 ) )

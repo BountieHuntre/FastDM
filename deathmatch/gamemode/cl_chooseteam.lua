@@ -136,7 +136,7 @@ function set_class( ply )
 		if tonumber( ply:GetNWInt( "playerLevel" ) ) >= 5 then
 			if ply:Team() == 2 or ply:Team() == 21 or ply:Team() == 23 or ply:Team() == 24 or ply:Team() == 25 then
 				class2.DoClick = function()
-					ply:ConCommand( "dm_team1_class2" )
+					ply:ConCommand( "dm_team2_class2" )
 					class:Close()
 				end
 			elseif ply:Team() == 5 then
