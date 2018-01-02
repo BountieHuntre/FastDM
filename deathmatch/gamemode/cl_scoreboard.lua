@@ -30,7 +30,7 @@ function GM:ScoreboardShow()
 		t1Panel:SetSize( t1:GetWide(), t1:GetTall() / 1.25 )
 		t1Panel:SetPos( 0, t1:GetTall() / 5 )
 		t1Panel.Paint = function()
-			draw.RoundedBox( 0, 0, 0, t1Panel:GetWide(), t1Panel:GetTall(), Color( 250, 175, 0, 255 ) )
+			draw.RoundedBox( 0, 0, 0, t1Panel:GetWide(), t1Panel:GetTall(), Color( 71, 130, 255, 255 ) )
 		end
 		
 		t1_pList = vgui.Create( "DListLayout", t1Panel )
@@ -118,7 +118,7 @@ function GM:ScoreboardShow()
 					draw.SimpleText( "Ping: " .. v:Ping(), "Reg", t1_pList:GetWide() - 20, 13, Color( 0, 0, 0 ), TEXT_ALIGN_RIGHT )
 				end
 			end
-			if ( v:Team() == TEAM_SPECTATOR or v:Team() == TEAM_UNASSIGNED or v:Team() == 2 or v:Team() == 3 ) then
+			if ( v:Team() == TEAM_SPECTATOR or v:Team() == TEAM_UNASSIGNED or v:Team() == 1 or v:Team() == 2 or v:Team() == 3 ) then
 				local t3_pPanel = vgui.Create( "DPanel", t3_pList )
 				t3_pPanel:SetSize( t3_pList:GetWide(), 50 )
 				t3_pPanel:SetPos( 0, 0 )

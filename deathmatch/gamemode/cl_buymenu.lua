@@ -5,8 +5,16 @@ local baseFrame = nil
 weps = {
 	c4 = {
 		name = "C4",
-		price = 1000,
+		nameS = "C4",
+		price = 10000,
 		equip = "m9k_suicide_bomb",
+		material = ""
+	},
+	nitro = {
+		name = "Nitro Glycerine",
+		nameS = "Nitro",
+		price = 10000,
+		equip = "m9k_nitro",
 		material = ""
 	}
 }
@@ -124,7 +132,7 @@ function buymenu( ply )
 		price[k]:SetText( "" )
 		price[k]:SetFont( "Reg" )
 		price[k].Paint = function()
-			if ( ply:GetNWBool( "C4" ) == true ) then
+			if ( ply:GetNWBool( weps[k].nameS ) == true ) then
 				draw.RoundedBox( 0, 0, 0, tile[k]:GetWide() / 5.95, tile[k]:GetTall() - 1, Color( 0, 0, 190, 255 ) )
 				draw.DrawText( "Equip", "Reg", price[k]:GetWide() / 2, tile[k]:GetTall() / 4, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER )
 			else
@@ -133,7 +141,7 @@ function buymenu( ply )
 			end
 		end
 		price[k].DoClick = function(  )
-			ply:ConCommand( "buyC4" )
+			ply:ConCommand( "buy"..weps[k].nameS )
 		end
 	end
 end

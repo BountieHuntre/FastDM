@@ -75,6 +75,11 @@ function GM:PlayerInitialSpawn( ply )
 	else
 		ply:SetNWBool( "C4", true )
 	end
+	if ( ply:GetPData( "Nitro" ) == nil ) then
+		ply:SetNWBool( "Nitro", false )
+	else
+		ply:SetNWBool( "Nitro", true )
+	end
 	
 	ply:ConCommand( "dm_start" )
 end
@@ -165,10 +170,10 @@ concommand.Add( "buyC4", function( sender, command, arguments )
 	if not sender:IsValid() then return end
 	local money = sender:GetNWInt( "playerMoney" )
 	if sender:GetNWBool( "C4" ) != true then
-		if tonumber( money ) < 1000 then
+		if tonumber( money ) < 10000 then
 			sender:PrintMessage( HUD_PRINTTALK, "You do not have enough Money." )
-		elseif tonumber( money ) >= 1000 then
-			sender:SetNWInt( "playerMoney", tonumber( money ) - 1000 )
+		elseif tonumber( money ) >= 10000 then
+			sender:SetNWInt( "playerMoney", tonumber( money ) - 1 )
 			sender:SetNWBool( "C4", true )
 			sender:Give( "m9k_suicide_bomb" )
 			sender:SelectWeapon( "m9k_suicide_bomb" )
@@ -178,11 +183,31 @@ concommand.Add( "buyC4", function( sender, command, arguments )
 	end
 end)
 
+concommand.Add( "buyNitro", function( sender, command, arguments )
+	if not sender:IsValid() then return end
+	local money = sender:GetNWInt( "playerMoney" )
+	if sender:GetNWBool( "Nitro" ) != true then
+		if tonumber( money ) < 10000 then
+			sender:PrintMessage( HUD_PRINTTALK, "You do not have enough Money." )
+		elseif tonumber( money ) >= 10000 then
+			sender:SetNWInt( "playerMoney", tonumber( money ) - 1 )
+			sender:SetNWBool( "Nitro", true )
+			sender:Give( "m9k_nitro" )
+			sender:SelectWeapon( "m9k_nitro" )
+		end
+	else
+		sender:Give( "m9k_nitro" )
+	end
+end)
+
 function GM:PlayerLoadout( ply )
 	if (ply:Team() == 1) or (ply:Team() == 2) or (ply:Team() == 3) or (ply:Team() == 25) then
 	else
 		if ply:GetNWBool( "C4" ) == true then
 			ply:Give( "m9k_suicide_bomb" )
+		end
+		if ply:GetNWBool( "Nitro" ) == true then
+			ply:Give( "m9k_nitro" )
 		end
 		ply:Give( "m9k_m61_frag" )
 		ply:SetAmmo( 0, ply:GetWeapon( "m9k_m61_frag" ):GetPrimaryAmmoType() )
@@ -341,6 +366,8 @@ function resetall( ply )
 			v:SetNWInt( "playerExp", 0 )
 			v:SetNWInt( "playerMoney", 0 )
 			v:SetNWBool( "C4", false )
+			v:StripWeapons()
+			v:Spawn()
 		end
 	end
 end
