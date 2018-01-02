@@ -32,6 +32,5 @@ This is a gamemode for Garry's Mod that is purely Team Deathmatch.
 - Custom Scoreboard
 
 ### Features to come:
-- Money System with Buy Menu
 - Custom Classes
-- More as I think of them
+- More items in the Buy Menu
