@@ -1,6 +1,10 @@
 ## FastDM
 This is a gamemode for Garry's Mod that is purely Team Deathmatch.
 
+### Changelog (1/2/2018):
+- Bug fixes
+- Added Nitro Glycerine to Buy Menu
+
 ### Changelog (8/28/2017):
 - Bug fixes
 - Added **_BUY MENU_**!
