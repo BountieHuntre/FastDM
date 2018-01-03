@@ -9,8 +9,8 @@ include( "shared.lua" )
 
 local open = false
 
-local DefaultRunSpeed = 400
-local DefaultWalkSpeed = 150
+local DefaultRunSpeed = 500
+local DefaultWalkSpeed = 300
 
 local RunDisable = 10
 
@@ -131,19 +131,54 @@ function GM:PlayerInitialSpawn( ply )
 		ply:SetNWInt( "playerMoney", ply:GetPData( "playerMoney" ) )
 	end
 	
-	if ( tobool( ply:GetPData( "C4" ) == nil ) ) then
+	if ( tobool( ply:GetPData( "C4" ) ) == nil ) then
 		ply:SetNWBool( "C4", false )
 		ply:SetPData( "C4", false )
 	else
 		ply:SetNWBool( "C4", tobool( ply:GetPData( "C4" ) ) )
 		ply:SetPData( "C4", tobool( ply:GetNWBool( "C4" ) ) )
 	end
-	if ( tobool( ply:GetPData( "Nitro" ) == nil ) ) then
+	if ( tobool( ply:GetPData( "Nitro" ) ) == nil ) then
 		ply:SetNWBool( "Nitro", false )
 		ply:SetPData( "Nitro", false )
 	else
 		ply:SetNWBool( "Nitro", tobool( ply:GetPData( "Nitro" ) ) )
 		ply:SetPData( "Nitro", tobool( ply:GetNWBool( "Nitro" ) ) )
+	end
+	if ( tobool( ply:GetPData( "Sticky" ) ) == nil ) then
+		ply:SetNWBool( "Sticky", false )
+		ply:SetPData( "Sticky", false )
+	else
+		ply:SetNWBool( "Sticky", tobool( ply:GetPData( "Sticky" ) ) )
+		ply:SetPData( "Sticky", tobool( ply:GetNWBool( "Sticky" ) ) )
+	end
+	if ( tobool( ply:GetPData( "Nerve" ) ) == nil ) then
+		ply:SetNWBool( "Nerve", false )
+		ply:SetPData( "Nerve", false )
+	else
+		ply:SetNWBool( "Nerve", tobool( ply:GetPData( "Nerve" ) ) )
+		ply:SetPData( "Nerve", tobool( ply:GetNWBool( "Nerve" ) ) )
+	end
+	if ( tobool( ply:GetPData( "Sword" ) ) == nil ) then
+		ply:SetNWBool( "Sword", false )
+		ply:SetPData( "Sword", false )
+	else
+		ply:SetNWBool( "Sword", tobool( ply:GetPData( "Sword" ) ) )
+		ply:SetPData( "Sword", tobool( ply:GetNWBool( "Sword" ) ) )
+	end
+	if ( tobool( ply:GetPData( "Machete" ) ) == nil ) then
+		ply:SetNWBool( "Machete", true )
+		ply:SetPData( "Machete", true )
+	else
+		ply:SetNWBool( "Machete", true )
+		ply:SetPData( "Machete", true )
+	end
+	if ( tobool( ply:GetPData( "Pref" ) ) == nil ) then
+		ply:SetNWBool( "Pref", true )
+		ply:SetPData( "Pref", true )
+	else
+		ply:SetNWBool( "Pref", tobool( ply:GetPData( "Pref" ) ) )
+		ply:SetPData( "Pref", tobool( ply:GetNWBool( "Pref" ) ) )
 	end
 	
 	ply:ConCommand( "dm_start" )
@@ -231,42 +266,111 @@ function GM:CanPlayerSuicide( ply )
 	end
 end
 
-concommand.Add( "buyC4", function( sender, command, arguments ) 
-	if not sender:IsValid() then return end
-	local money = sender:GetNWInt( "playerMoney" )
-	if sender:GetNWBool( "C4" ) != true then
+concommand.Add( "buyC4", function( ply, cmd, args ) 
+	if not ply:IsValid() then return end
+	local money = ply:GetNWInt( "playerMoney" )
+	if ply:GetNWBool( "C4" ) != true then
 		if tonumber( money ) < 10000 then
-			sender:PrintMessage( HUD_PRINTTALK, "You do not have enough Money." )
+			ply:PrintMessage( HUD_PRINTTALK, "You do not have enough Money." )
 		elseif tonumber( money ) >= 10000 then
-			sender:SetNWInt( "playerMoney", tonumber( money ) - 10000 )
-			sender:SetNWBool( "C4", true )
-			sender:SetPData( "C4", true )
-			sender:Give( "m9k_suicide_bomb" )
-			sender:SelectWeapon( "m9k_suicide_bomb" )
+			ply:SetNWInt( "playerMoney", tonumber( money ) - 10000 )
+			ply:SetNWBool( "C4", true )
+			ply:SetPData( "C4", true )
+			ply:Give( "m9k_suicide_bomb" )
+			ply:SelectWeapon( "m9k_suicide_bomb" )
 		end
 	else
-		sender:Give( "m9k_suicide_bomb" )
-		sender:SelectWeapon( "m9k_suicide_bomb" )
+		ply:Give( "m9k_suicide_bomb" )
+		ply:SelectWeapon( "m9k_suicide_bomb" )
 	end
 end)
 
-concommand.Add( "buyNitro", function( sender, command, arguments )
-	if not sender:IsValid() then return end
-	local money = sender:GetNWInt( "playerMoney" )
-	if sender:GetNWBool( "Nitro" ) != true then
-		if tonumber( money ) < 10000 then
-			sender:PrintMessage( HUD_PRINTTALK, "You do not have enough Money." )
-		elseif tonumber( money ) >= 10000 then
-			sender:SetNWInt( "playerMoney", tonumber( money ) - 10000 )
-			sender:SetNWBool( "Nitro", true )
-			sender:SetPData( "Nitro", true )
-			sender:Give( "m9k_nitro" )
-			sender:SelectWeapon( "m9k_nitro" )
+concommand.Add( "buyNitro", function( ply, cmd, args )
+	if not ply:IsValid() then return end
+	local money = ply:GetNWInt( "playerMoney" )
+	if ply:GetNWBool( "Nitro" ) != true then
+		if tonumber( money ) < 7000 then
+			ply:PrintMessage( HUD_PRINTTALK, "You do not have enough Money." )
+		elseif tonumber( money ) >= 7000 then
+			ply:SetNWInt( "playerMoney", tonumber( money ) - 7000 )
+			ply:SetNWBool( "Nitro", true )
+			ply:SetPData( "Nitro", true )
+			ply:Give( "m9k_nitro" )
+			ply:SelectWeapon( "m9k_nitro" )
 		end
 	else
-		sender:Give( "m9k_nitro" )
-		sender:SelectWeapon( "m9k_nitro" )
+		ply:Give( "m9k_nitro" )
+		ply:SelectWeapon( "m9k_nitro" )
 	end
+end)
+
+concommand.Add( "buySticky", function( ply, cmd, args )
+	if not ply:IsValid() then return end
+	local money = ply:GetNWInt( "playerMoney" )
+	if ply:GetNWBool( "Sticky" ) != true then
+		if tonumber( money ) < 5000 then
+			ply:PrintMessage( HUD_PRINTTALK, "You do not have enough Money." )
+		elseif tonumber( money ) >= 5000 then
+			ply:SetNWInt( "playerMoney", tonumber( money ) - 5000 )
+			ply:SetNWBool( "Sticky", true )
+			ply:SetPData( "Sticky", true )
+			ply:Give( "m9k_sticky_grenade" )
+			ply:SelectWeapon( "m9k_sticky_grenade" )
+		end
+	else
+		ply:Give( "m9k_sticky_grenade" )
+		ply:SelectWeapon( "m9k_sticky_grenade" )
+	end
+end)
+
+concommand.Add( "buyNerve", function( ply, cmd, args )
+	if not ply:IsValid() then return end
+	local money = ply:GetNWInt( "playerMoney" )
+	if ply:GetNWBool( "Nerve" ) != true then
+		if tonumber( money ) < 500000 then
+			ply:PrintMessage( HUD_PRINTTALK, "You do not have enough Money." )
+		elseif tonumber( money ) >= 500000 then
+			ply:SetNWInt( "playerMoney", tonumber( money ) - 500000 )
+			ply:SetNWBool( "Nerve", true )
+			ply:SetPData( "Nerve", true )
+			ply:Give( "m9k_nerve_gas" )
+			ply:SelectWeapon( "m9k_nerve_gas" )
+		end
+	else
+		ply:Give( "m9k_nerve_gas" )
+		ply:SelectWeapon( "m9k_nerve_gas" )
+	end
+end)
+
+concommand.Add( "buySword", function( ply, cmd, args )
+	if not ply:IsValid() then return end
+	local money = ply:GetNWInt( "playerMoney" )
+	if ply:GetNWBool( "Sword" ) != true then
+		if tonumber( money ) < 5000 then
+			ply:PrintMessage( HUD_PRINTTALK, "You do not have enough Money." )
+		elseif tonumber( money ) >= 5000 then
+			ply:SetNWInt( "playerMoney", tonumber( money ) - 5000 )
+			ply:SetNWBool( "Sword", true )
+			ply:SetPData( "Sword", true )
+			ply:SetNWBool( "Pref", false )
+			ply:SetPData( "Pref", false )
+			ply:StripWeapon( "m9k_machete" )
+			ply:Give( "m9k_damascus" )
+			ply:SelectWeapon( "m9k_damascus" )
+		end
+	else
+		ply:Give( "m9k_damascus" )
+		ply:SelectWeapon( "m9k_damascus" )
+	end
+end)
+
+concommand.Add( "buyMachete", function ( ply, cmd, args )
+	if not ply:IsValid() then return end
+	ply:SetNWBool( "Pref", true )
+	ply:SetPData( "Pref", true )
+	ply:StripWeapon( "m9k_damascus" )
+	ply:Give( "m9k_machete" )
+	ply:SelectWeapon( "m9k_machete" )
 end)
 
 function GM:PlayerLoadout( ply )
@@ -278,9 +382,21 @@ function GM:PlayerLoadout( ply )
 		if ply:GetNWBool( "Nitro" ) == true then
 			ply:Give( "m9k_nitro" )
 		end
+		if ply:GetNWBool( "Sticky" ) == true then
+			ply:Give( "m9k_sticky_grenade" )
+		end
+		if ply:GetNWBool( "Nerve" ) == true then
+			ply:Give( "m9k_nerve_gas" )
+		end
+		if ply:GetNWBool( "Pref" ) == true then
+			ply:Give( "m9k_machete" )
+		elseif ply:GetNWBool( "Sword" ) == true and ply:GetNWBool( "Pref" ) != true then
+			ply:Give( "m9k_damascus" )
+		else
+			ply:Give( "m9k_machete" )
+		end
 		ply:Give( "m9k_m61_frag" )
 		ply:SetAmmo( 0, ply:GetWeapon( "m9k_m61_frag" ):GetPrimaryAmmoType() )
-		ply:Give( "m9k_machete" )
 	end
 	
 	if ply:Team() == 4 then
@@ -401,6 +517,11 @@ function GM:PlayerDisconnected( ply )
 	ply:SetPData( "playerKills", ply:GetNWInt( "playerKills" ) )
 	ply:SetPData( "C4", ply:GetNWBool( "C4" ) )
 	ply:SetPData( "Nitro", ply:GetNWBool( "Nitro" ) )
+	ply:SetPData( "Sticky", ply:GetNWBool( "Sticky" ) )
+	ply:SetPData( "Nerve", ply:GetNWBool( "Nerve" ) )
+	ply:SetPData( "Sword", ply:GetNWBool( "Sword" ) )
+	ply:SetPData( "Machete", ply:GetNWBool( "Machete" ) )
+	ply:SetPData( "Pref", ply:GetNWBool( "Pref" ) )
 end
 
 function GM:ShutDown()
@@ -411,6 +532,11 @@ function GM:ShutDown()
 		v:SetPData( "playerKills", v:GetNWInt( "playerKills" ) )
 		v:SetPData( "C4", v:GetNWBool( "C4" ) )
 		v:SetPData( "Nitro", v:GetNWBool( "Nitro" ) )
+		v:SetPData( "Sticky", v:GetNWBool( "Sticky" ) )
+		v:SetPData( "Nerve", v:GetNWBool( "Nerve" ) )
+		v:SetPData( "Sword", v:GetNWBool( "Sword" ) )
+		v:SetPData( "Machete", v:GetNWBool( "Machete" ) )
+		v:SetPData( "Pref", v:GetNWBool( "Pref" ) )
 	end
 end
 
@@ -435,15 +561,27 @@ function resetall( ply )
 			v:SetPData( "playerMoney", 0 )
 			v:SetPData( "C4", false )
 			v:SetPData( "Nitro", false )
+			v:SetPData( "Sticky", false )
+			v:SetPData( "Nerve", false )
+			v:SetPData( "Sword", false )
+			v:SetPData( "Machete", true )
+			v:SetPData( "Pref", true )
 			v:SetNWInt( "playerKills", 0 )
 			v:SetNWInt( "playerLevel", 1 )
 			v:SetNWInt( "playerExp", 0 )
 			v:SetNWInt( "playerMoney", 0 )
 			v:SetNWBool( "C4", false )
 			v:SetNWBool( "Nitro", false )
+			v:SetNWBool( "Sticky", false )
+			v:SetNWBool( "Nerve", false )
+			v:SetNWBool( "Sword", false )
+			v:SetNWBool( "Machete", true )
+			v:SetNWBool( "Pref", true )
 			v:StripWeapons()
 			v:Spawn()
 		end
+	else
+		ply:PrintMessage( HUD_PRINTTALK, "You are not allowed to use this command." )
 	end
 end
 concommand.Add( "resetall", resetall )
@@ -464,12 +602,22 @@ function resetplayer( ply, cmd, args )
 			target:SetPData( "playerMoney", 0 )
 			target:SetPData( "C4", false )
 			target:SetPData( "Nitro", false )
+			target:SetPData( "Sticky", false )
+			target:SetPData( "Nerve", false )
+			target:SetPData( "Sword", false )
+			target:SetPData( "Machete", true )
+			target:SetPData( "Pref", true )
 			target:SetNWInt( "playerKills", 0 )
 			target:SetNWInt( "playerLevel", 1 )
 			target:SetNWInt( "playerExp", 0 )
 			target:SetNWInt( "playerMoney", 0 )
 			target:SetNWBool( "C4", false )
 			target:SetNWBool( "Nitro", false )
+			target:SetNWBool( "Sticky", false )
+			target:SetNWBool( "Nerve", false )
+			target:SetNWBool( "Sword", false )
+			target:SetNWBool( "Machete", true )
+			target:SetNWBool( "Pref", true )
 			target:StripWeapons()
 			target:Spawn()
 		else

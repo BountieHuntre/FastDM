@@ -13,19 +13,69 @@ weps = {
 	nitro = {
 		name = "Nitro Glycerine",
 		nameS = "Nitro",
-		price = 10000,
+		price = 7000,
 		equip = "m9k_nitro",
+		material = ""
+	},
+	sticky = {
+		name = "Sticky Grenade",
+		nameS = "Sticky",
+		price = 5000,
+		equip = "m9k_sticky_grenade",
+		material = ""
+	},
+	nerve = {
+		name = "Nerve Gas",
+		nameS = "Nerve",
+		price = 500000,
+		equip = "m9k_nerve_gas",
+		material = ""
+	},
+	sword = {
+		name = "Damascus Sword",
+		nameS = "Sword",
+		price = 5000,
+		equip = "m9k_damascus",
+		material = ""
+	},
+	machete = {
+		name = "Machete",
+		nameS = "Machete",
+		price = 0,
+		equip = "m9k_machete",
 		material = ""
 	}
 }
 
+/*
+test = {
+	test1 = {
+		name = "test1",
+		nameS = "test1",
+		price = 0,
+		equip = "",
+		material = "",
+	},
+	test2 = {
+		name = "test2",
+		nameS = "test2",
+		price = 10,
+		equip = "",
+		material = ""
+	}
+}
+*/
+
 local categories = {
-	"Weapons"
+	"Weapons"//,
+	//"test"
 }
 
 local button = {}
-local tile = {}
-local price = {}
+local wTile = {}
+local wPrice = {}
+//local tTile = {}
+//local tPrice = {}
 local equip = {}
 local material = {}
 
@@ -76,6 +126,9 @@ function buymenu( ply )
 		end
 		if k == 1 then
 			button[k].DoClick = function()
+				if tframe:IsVisible() then
+					tframe:SetVisible( false )
+				end
 				if !wframe:IsVisible() then
 					wframe:SetVisible( true )
 				else
@@ -87,6 +140,11 @@ function buymenu( ply )
 			button[k].DoClick = function()
 				if wframe:IsVisible() then
 					wframe:SetVisible( false )
+				end
+				if !tframe:IsVisible() then
+					tframe:SetVisible( true )
+				else
+					tframe:SetVisible( false )
 				end
 			end
 		end
@@ -113,36 +171,73 @@ function buymenu( ply )
 	wframe:SetVisible( false )
 	
 	for k, v in pairs( weps ) do
-		tile[k] = vgui.Create( "DFrame", wframe )
-		tile[k]:SetPos( 0, 0 )
-		tile[k]:SetSize( wframe:GetWide(), wframe:GetTall() / 10 )
-		tile[k]:SetTitle( "" )
-		tile[k]:SetVisible( true )
-		tile[k]:SetDraggable( false )
-		tile[k]:ShowCloseButton( false )
-		tile[k].Paint = function()
-			draw.RoundedBox( 0, 0, 0, tile[k]:GetWide(), tile[k]:GetTall(), Color( 255, 255, 255, 255 ) )
-			draw.RoundedBox( 0, 0, tile[k]:GetTall() - 1, tile[k]:GetWide(), 1, Color( 60, 60, 60, 255 ) )
-			draw.DrawText( weps[k].name, "Reg", tile[k]:GetWide() / 20, tile[k]:GetTall() / 4, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT )
+		wTile[k] = vgui.Create( "DFrame", wframe )
+		wTile[k]:SetPos( 0, 0 )
+		wTile[k]:SetSize( wframe:GetWide(), wframe:GetTall() / 10 )
+		wTile[k]:SetTitle( "" )
+		wTile[k]:SetVisible( true )
+		wTile[k]:SetDraggable( false )
+		wTile[k]:ShowCloseButton( false )
+		wTile[k].Paint = function()
+			draw.RoundedBox( 0, 0, 0, wTile[k]:GetWide(), wTile[k]:GetTall(), Color( 255, 255, 255, 255 ) )
+			draw.RoundedBox( 0, 0, wTile[k]:GetTall() - 1, wTile[k]:GetWide(), 1, Color( 60, 60, 60, 255 ) )
+			draw.DrawText( weps[k].name, "Reg", wTile[k]:GetWide() / 20, wTile[k]:GetTall() / 4, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT )
 		end
 		
-		price[k] = vgui.Create( "DButton", tile[k] )
-		price[k]:SetPos( tile[k]:GetWide() / 1.2, 0 )
-		price[k]:SetSize( tile[k]:GetWide() / 5.95, tile[k]:GetTall() )
-		price[k]:SetText( "" )
-		price[k]:SetFont( "Reg" )
-		price[k].Paint = function()
+		wPrice[k] = vgui.Create( "DButton", wTile[k] )
+		wPrice[k]:SetPos( wTile[k]:GetWide() / 1.2, 0 )
+		wPrice[k]:SetSize( wTile[k]:GetWide() / 5.95, wTile[k]:GetTall() )
+		wPrice[k]:SetText( "" )
+		wPrice[k]:SetFont( "Reg" )
+		wPrice[k].Paint = function()
 			if ( ply:GetNWBool( weps[k].nameS ) == false or ply:GetPData( weps[k].nameS ) == false ) then
-				draw.RoundedBox( 0, 0, 0, tile[k]:GetWide() / 5.95, tile[k]:GetTall() - 1, Color( 0, 190, 0, 255 ) )
-				draw.DrawText( "$"..weps[k].price, "Reg", price[k]:GetWide() / 2, tile[k]:GetTall() / 4, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
+				draw.RoundedBox( 0, 0, 0, wTile[k]:GetWide() / 5.95, wTile[k]:GetTall() - 1, Color( 0, 190, 0, 255 ) )
+				draw.DrawText( "$"..weps[k].price, "Reg", wPrice[k]:GetWide() / 2, wTile[k]:GetTall() / 4, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
 			else
-				draw.RoundedBox( 0, 0, 0, tile[k]:GetWide() / 5.95, tile[k]:GetTall() - 1, Color( 0, 0, 190, 255 ) )
-				draw.DrawText( "Equip", "Reg", price[k]:GetWide() / 2, tile[k]:GetTall() / 4, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER )
+				draw.RoundedBox( 0, 0, 0, wTile[k]:GetWide() / 5.95, wTile[k]:GetTall() - 1, Color( 0, 0, 190, 255 ) )
+				draw.DrawText( "Equip", "Reg", wPrice[k]:GetWide() / 2, wTile[k]:GetTall() / 4, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER )
 			end
 		end
-		price[k].DoClick = function(  )
+		wPrice[k].DoClick = function(  )
 			ply:ConCommand( "buy"..weps[k].nameS )
 		end
 	end
+	
+	/*
+	tframe = vgui.Create( "DListLayout", scroller )
+	tframe:SetPos( 0, 0 )
+	tframe:SetSize( scroller:GetWide(), scroller:GetTall() )
+	tframe:SetVisible( false )
+	
+	for k, v in pairs( test ) do
+		tTile[k] = vgui.Create( "DFrame", tframe )
+		tTile[k]:SetPos( 0, 0 )
+		tTile[k]:SetSize( tframe:GetWide(), tframe:GetTall() / 10 )
+		tTile[k]:SetTitle( "" )
+		tTile[k]:SetVisible( true )
+		tTile[k]:SetDraggable( false )
+		tTile[k]:ShowCloseButton( false )
+		tTile[k].Paint = function()
+			draw.RoundedBox( 0, 0, 0, tTile[k]:GetWide(), tTile[k]:GetTall(), Color( 255, 255, 255, 255 ) )
+			draw.RoundedBox( 0, 0, tTile[k]:GetTall() - 1, tTile[k]:GetWide(), 1, Color( 60, 60, 60, 255 ) )
+			draw.DrawText( test[k].name, "Reg", tTile[k]:GetWide() / 20, tTile[k]:GetTall() / 4, Color( 0, 0, 0, 255 ), TEXT_ALIGN_LEFT )
+		end
+		
+		tPrice[k] = vgui.Create( "DButton", tTile[k] )
+		tPrice[k]:SetPos( tTile[k]:GetWide() / 1.2, 0 )
+		tPrice[k]:SetSize( tTile[k]:GetWide() / 5.95, tTile[k]:GetTall() )
+		tPrice[k]:SetText( "" )
+		tPrice[k]:SetFont( "Reg" )
+		tPrice[k].Paint = function()
+			if ( ply:GetNWBool( test[k].nameS ) == false or ply:GetPData( test[k].nameS ) == false ) then
+				draw.RoundedBox( 0, 0, 0, tTile[k]:GetWide() / 5.95, tTile[k]:GetTall() - 1, Color( 0, 190, 0, 255 ) )
+				draw.DrawText( "$"..test[k].price, "Reg", tPrice[k]:GetWide() / 2, tTile[k]:GetTall() / 4, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
+			else
+				draw.RoundedBox( 0, 0, 0, tTile[k]:GetWide() / 5.95, tTile[k]:GetTall() - 1, Color( 0, 0, 190, 255 ) )
+				draw.DrawText( "Equip", "Reg", tPrice[k]:GetWide() / 2, tTile[k]:GetTall() / 4, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER )
+			end
+		end
+	end
+	*/
 end
 concommand.Add( "buymenu", buymenu )

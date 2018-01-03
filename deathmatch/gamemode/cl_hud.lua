@@ -62,12 +62,14 @@ function HUD()
 		end
 		
 		if ( cWep != "m9k_machete" ) then
-			if ( cWep == "weapon_medkit" ) then
-				draw.SimpleText( ply:GetActiveWeapon():Clip1(), "BIG_T", ScrW() - 20, ScrH() - 80, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT )
-			elseif ( ply:GetActiveWeapon():Clip1() != -1 ) then
-				draw.SimpleText( ply:GetActiveWeapon():Clip1() .. " / " .. ply:GetAmmoCount( ply:GetActiveWeapon():GetPrimaryAmmoType()), "BIG_T", ScrW() - 20, ScrH() - 80, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT )
-			else
-				draw.SimpleText( ply:GetAmmoCount( ply:GetActiveWeapon():GetPrimaryAmmoType() ), "BIG_T", ScrW() - 20, ScrH() - 80, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT )
+			if ( cWep != "m9k_damascus" ) then
+				if ( cWep == "weapon_medkit" ) then
+					draw.SimpleText( ply:GetActiveWeapon():Clip1(), "BIG_T", ScrW() - 20, ScrH() - 80, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT )
+				elseif ( ply:GetActiveWeapon():Clip1() != -1 ) then
+					draw.SimpleText( ply:GetActiveWeapon():Clip1() .. " / " .. ply:GetAmmoCount( ply:GetActiveWeapon():GetPrimaryAmmoType()), "BIG_T", ScrW() - 20, ScrH() - 80, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT )
+				else
+					draw.SimpleText( ply:GetAmmoCount( ply:GetActiveWeapon():GetPrimaryAmmoType() ), "BIG_T", ScrW() - 20, ScrH() - 80, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT )
+				end
 			end
 		end
 	end
