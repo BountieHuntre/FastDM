@@ -35,6 +35,8 @@ This is a gamemode for Garry's Mod that is purely Team Deathmatch.
 - Kill Counter
 - Custom Menus
 - Custom Scoreboard
+- Sprint Stamina System
+- Buy Menu
 
 ### Features to come:
 - Custom Classes
