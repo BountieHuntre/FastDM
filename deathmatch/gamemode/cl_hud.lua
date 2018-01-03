@@ -18,7 +18,7 @@ function HUD()
 	//killcount box
 	if ply:Team() == TEAM_SPECTATOR or ply:Team() == TEAM_UNASSIGNED or ply:Team() == 1 or ply:Team() == 2 or ply:Team() == 3 then
 		return
-	elseif ply:Team() == 21 or ply:Team() == 22 or ply:Team() == 23 or ply:Team() == 24 or ply:Team() == 25 then
+	elseif ply:Team() > 20 and ply:Team() < 26 then
 		draw.RoundedBox( 0, ScrW() - 300, 0, 300, 100, Color( 255, 175, 0, 150 ) )
 	else
 		draw.RoundedBox( 0, ScrW() - 300, 0, 300, 100, Color( 21, 80, 205, 150 ) )
@@ -27,7 +27,7 @@ function HUD()
 	draw.SimpleText( ply:GetNWInt( "playerKills" ), "BIG_T", ScrW() - 10, 35, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT )
 	
 	//stats box
-	if ply:Team() == 21 or ply:Team() == 22 or ply:Team() == 23 or ply:Team() == 24 or ply:Team() == 25 then
+	if ply:Team() > 20 and ply:Team() < 26 then
 		draw.RoundedBox( 0, 5, ScrH() - 105, 250, 100, Color( 255, 175, 0, 150 ) )
 	else
 		draw.RoundedBox( 0, 5, ScrH() - 105, 250, 100, Color( 21, 80, 205, 150 ) )
@@ -36,6 +36,14 @@ function HUD()
 	//health box
 	draw.RoundedBox( 0, 10, ScrH() - 100, 240 * ply:Health() / LocalPlayer():GetMaxHealth(), 90, Color( 255, 0, 0, 255 ) )
 	draw.SimpleText( ply:Health(), "BIG_T", 240, ScrH() - 87, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT )
+	
+	//stamina box
+	if ply:Team() > 20 and ply:Team() < 26 then
+		draw.RoundedBox( 0, 5, ScrH() - 5, 250, 5, Color( 255, 175, 0, 150 ) )
+	else
+		draw.RoundedBox( 0, 5, ScrH() - 5, 250, 5, Color( 21, 80, 205, 150 ) )
+	end
+	draw.RoundedBox( 0, 10, ScrH() - 4.5, 240 * ply:GetNWInt( "Stamina" ) / 100, 2, Color( 255, 255, 0, 255 ) )
 	
 	//weapon box
 	if ply:Team() == 1 then

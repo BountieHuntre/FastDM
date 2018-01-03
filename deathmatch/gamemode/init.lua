@@ -9,6 +9,14 @@ include( "shared.lua" )
 
 local open = false
 
+local DefaultRunSpeed = 400
+local DefaultWalkSpeed = 150
+
+local RunDisable = 10
+
+local StaminaDrainSpeed = 0.01
+local StaminaRegenSpeed = 0.1
+
 PLAYER = FindMetaTable( "Player" )
 
 function PLAYER:Unassigned()
@@ -25,6 +33,59 @@ function PLAYER:CanRespawn()
 	end
 	
 	return true
+end
+
+function StaminaStart( ply )
+	timer.Remove( "StaminaTimer" )
+	ply:SetRunSpeed( DefaultRunSpeed )
+	ply:SetNWInt( "Stamina", 100 )
+	
+	StaminaRegen( ply )
+end
+hook.Add( "PlayerSpawn", "StaminaStart", StaminaStart )
+
+function StaminaPress( ply, key )
+	if key == IN_SPEED or ply:KeyDown( IN_SPEED ) then
+		if ply:GetMoveType() == MOVETYPE_NOCLIP then return end
+		if ply:GetMoveType() == MOVETYPE_LADDER then return end
+		if ply:GetNWInt( "Stamina" ) >= RunDisable then
+			ply:SetRunSpeed( DefaultRunSpeed )
+			timer.Remove( "StaminaRegen" )
+			timer.Create( "StaminaTimer", StaminaDrainSpeed, 0, function( )
+				if ply:GetNWInt( "Stamina" ) <= 0 then
+					ply:SetRunSpeed( DefaultWalkSpeed )
+					timer.Remove( "StaminaTimer" )
+					return false
+				end
+				local vel = ply:GetVelocity()
+				if vel.x >= DefaultWalkSpeed or vel.x <= -DefaultWalkSpeed or vel.y >= DefaultWalkSpeed or vel.y <= -DefaultWalkSpeed then
+					ply:SetNWInt( "Stamina", ply:GetNWInt( "Stamina" ) - 1 )
+				end
+			end)
+		else
+			ply:SetRunSpeed( DefaultWalkSpeed )
+			timer.Remove( "StaminaTimer" )
+		end
+	end
+end
+hook.Add( "KeyPress", "StaminaPress", StaminaPress ) 
+
+function StaminaRelease( ply, key )
+	if key == IN_SPEED and !ply:KeyDown( IN_SPEED ) then
+		timer.Remove( "StaminaTimer" )
+		StaminaRegen( ply )
+	end
+end
+hook.Add( "KeyRelease", "StaminaRelease", StaminaRelease )
+
+function StaminaRegen( ply )
+	timer.Create( "StaminaGain", StaminaRegenSpeed, 0, function ( )
+		if ply:GetNWInt( "Staming" ) >= 100 then
+			return false
+		else
+			ply:SetNWInt( "Stamina", math.Clamp( ply:GetNWInt( "Stamina" ) + 2, 0, 100 ) )
+		end
+	end)
 end
 
 function GM:PlayerSpawn( ply )
@@ -173,7 +234,7 @@ concommand.Add( "buyC4", function( sender, command, arguments )
 		if tonumber( money ) < 10000 then
 			sender:PrintMessage( HUD_PRINTTALK, "You do not have enough Money." )
 		elseif tonumber( money ) >= 10000 then
-			sender:SetNWInt( "playerMoney", tonumber( money ) - 1 )
+			sender:SetNWInt( "playerMoney", tonumber( money ) - 10000 )
 			sender:SetNWBool( "C4", true )
 			sender:Give( "m9k_suicide_bomb" )
 			sender:SelectWeapon( "m9k_suicide_bomb" )
@@ -190,7 +251,7 @@ concommand.Add( "buyNitro", function( sender, command, arguments )
 		if tonumber( money ) < 10000 then
 			sender:PrintMessage( HUD_PRINTTALK, "You do not have enough Money." )
 		elseif tonumber( money ) >= 10000 then
-			sender:SetNWInt( "playerMoney", tonumber( money ) - 1 )
+			sender:SetNWInt( "playerMoney", tonumber( money ) - 10000 )
 			sender:SetNWBool( "Nitro", true )
 			sender:Give( "m9k_nitro" )
 			sender:SelectWeapon( "m9k_nitro" )
@@ -331,6 +392,7 @@ function GM:PlayerDisconnected( ply )
 	ply:SetPData( "playerMoney", ply:GetNWInt( "playerMoney" ) )
 	ply:SetPData( "playerKills", ply:GetNWInt( "playerKills" ) )
 	ply:SetPData( "C4", ply:GetNWBool( "C4" ) )
+	ply:SetPData( "Nitro", ply:GetNWBool( "Nitro" ) )
 end
 
 function GM:ShutDown()
@@ -340,6 +402,7 @@ function GM:ShutDown()
 		v:SetPData( "playerMoney", v:GetNWInt( "playerMoney" ) )
 		v:SetPData( "playerKills", v:GetNWInt( "playerKills" ) )
 		v:SetPData( "C4", v:GetNWBool( "C4" ) )
+		v:SetPData( "Nitro", v:GetNWBool( "Nitro" ) )
 	end
 end
 
@@ -358,14 +421,18 @@ concommand.Add( "showammo", showammo )
 function resetall( ply )
 	if ply:IsAdmin() or ply:IsSuperAdmin() then
 		for k, v in pairs( player.GetAll() ) do
+			v:SetPData( "playerKills", 0 )
 			v:SetPData( "playerLevel", 1 )
 			v:SetPData( "playerExp", 0 )
 			v:SetPData( "playerMoney", 0 )
 			v:SetPData( "C4", false )
+			v:SetPData( "Nitro", false )
+			v:SetNWInt( "playerKills", 0 )
 			v:SetNWInt( "playerLevel", 1 )
 			v:SetNWInt( "playerExp", 0 )
 			v:SetNWInt( "playerMoney", 0 )
 			v:SetNWBool( "C4", false )
+			v:SetNWBool( "Nitro", false )
 			v:StripWeapons()
 			v:Spawn()
 		end
@@ -531,15 +598,36 @@ function dm_team2_class5( ply )
 end
 concommand.Add( "dm_team2_class5", dm_team2_class5 )
 
-function resetlevel( ply )
-	ply:SetNWInt( "playerLevel", 1 )
-	ply:SetNWInt( "playerExp", 0 )
-	ply:SetNWInt( "playerMoney", 0 )
-	ply:SetNWBool( "C4", false )
-	ply:StripWeapons()
-	ply:Spawn()
+function resetplayer( ply, cmd, args )
+	if ply:IsAdmin() or ply:IsSuperAdmin() then
+		local target = NULL
+		for k, v in pairs( player.GetAll() ) do
+			if ( string.find( string.lower( v:GetName() ), string.lower( args[1] ) ) != nil ) then
+				target = v
+				break
+			end
+		end
+		if IsValid( target ) then
+			target:SetPData( "playerKills", 0 )
+			target:SetPData( "playerLevel", 1 )
+			target:SetPData( "playerExp", 0 )
+			target:SetPData( "playerMoney", 0 )
+			target:SetPData( "C4", false )
+			target:SetPData( "Nitro", false )
+			target:SetNWInt( "playerKills", 0 )
+			target:SetNWInt( "playerLevel", 1 )
+			target:SetNWInt( "playerExp", 0 )
+			target:SetNWInt( "playerMoney", 0 )
+			target:SetNWBool( "C4", false )
+			target:SetNWBool( "Nitro", false )
+			target:StripWeapons()
+			target:Spawn()
+		else
+			print( "Couldn't find target with partial name: ", args[1] )
+		end
+	end
 end
-concommand.Add( "resetplayer", resetlevel )
+concommand.Add( "resetplayer", resetplayer )
 
 
 function checkForLevel( ply )
@@ -551,7 +639,7 @@ function checkForLevel( ply )
 		cExp = cExp - etl
 		
 		ply:SetNWInt( "playerExp", cExp )
-		ply:SetNWInt( "playerLevel", cLvl + 1 )
+		ply:SetNWInt( "playerLevel", math.Clamp( cLvl + 1, 0, 50 ) )
 	end
 end
 
