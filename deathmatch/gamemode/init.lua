@@ -143,7 +143,7 @@ function GM:PlayerInitialSpawn( ply )
 		ply:SetPData( "Nitro", false )
 	else
 		ply:SetNWBool( "Nitro", tobool( ply:GetPData( "Nitro" ) ) )
-		ply:SetPData( "Nitro", ply:GetNWBool( "Nitro" ) )
+		ply:SetPData( "Nitro", tobool( ply:GetNWBool( "Nitro" ) ) )
 	end
 	
 	ply:ConCommand( "dm_start" )
