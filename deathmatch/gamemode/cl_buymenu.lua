@@ -132,12 +132,12 @@ function buymenu( ply )
 		price[k]:SetText( "" )
 		price[k]:SetFont( "Reg" )
 		price[k].Paint = function()
-			if ( ply:GetNWBool( weps[k].nameS ) == true ) then
-				draw.RoundedBox( 0, 0, 0, tile[k]:GetWide() / 5.95, tile[k]:GetTall() - 1, Color( 0, 0, 190, 255 ) )
-				draw.DrawText( "Equip", "Reg", price[k]:GetWide() / 2, tile[k]:GetTall() / 4, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER )
-			else
+			if ( ply:GetNWBool( weps[k].nameS ) == false or ply:GetPData( weps[k].nameS ) == false ) then
 				draw.RoundedBox( 0, 0, 0, tile[k]:GetWide() / 5.95, tile[k]:GetTall() - 1, Color( 0, 190, 0, 255 ) )
 				draw.DrawText( "$"..weps[k].price, "Reg", price[k]:GetWide() / 2, tile[k]:GetTall() / 4, Color( 0, 0, 0, 255 ), TEXT_ALIGN_CENTER )
+			else
+				draw.RoundedBox( 0, 0, 0, tile[k]:GetWide() / 5.95, tile[k]:GetTall() - 1, Color( 0, 0, 190, 255 ) )
+				draw.DrawText( "Equip", "Reg", price[k]:GetWide() / 2, tile[k]:GetTall() / 4, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER )
 			end
 		end
 		price[k].DoClick = function(  )

@@ -253,7 +253,7 @@ function set_class( ply )
 			draw.RoundedBox( 0, 0, 0, class5:GetWide(), class5:GetTall(), team.GetColor( 2 ) )
 		end
 		
-		if ply:IsAdmin() or ply:IsSuperAdmin() or ply:IsUserGroup("trusted") then
+		if ply:IsAdmin() or ply:IsSuperAdmin() or ply:IsUserGroup("donator") or ply:IsUserGroup("owner") then
 			if ply:Team() == 2 or ply:Team() == 21 or ply:Team() == 22 or ply:Team() == 23 or ply:Team() == 24 then
 				class5.DoClick = function()
 					ply:ConCommand( "dm_team2_class5" )
@@ -274,7 +274,7 @@ function set_class( ply )
 			tblocker = vgui.Create( "DLabel", class5 )
 			tblocker:SetPos( 0, 0 )
 			tblocker:SetSize( class5:GetWide(), class5:GetTall() )
-			tblocker:SetText( "You must be \"Trusted.\"" )
+			tblocker:SetText( "You must be a \"Donator.\"" )
 			tblocker:SetFont( "Reg" )
 			tblocker:SetContentAlignment( 5 )
 			tblocker:SetTextColor( Color( 255, 255, 255, 255 ) )
@@ -439,7 +439,7 @@ function set_class( ply )
 			draw.RoundedBox( 0, 0, 0, class5:GetWide(), class5:GetTall(), team.GetColor( 3 ) )
 		end
 		
-		if ply:IsAdmin() or ply:IsSuperAdmin() or ply:IsUserGroup("trusted") then
+		if ply:IsAdmin() or ply:IsSuperAdmin() or ply:IsUserGroup("donator") or ply:IsUserGroup("owner") then
 			if ply:Team() == 3 or ply:Team() == 4 or ply:Team() == 5 or ply:Team() == 6 or ply:Team() == 7 then
 				class5.DoClick = function()
 					ply:ConCommand( "dm_team1_class5" )
@@ -460,7 +460,7 @@ function set_class( ply )
 			tblocker = vgui.Create( "DLabel", class5 )
 			tblocker:SetPos( 0, 0 )
 			tblocker:SetSize( class5:GetWide(), class5:GetTall() )
-			tblocker:SetText( "You must be \"Trusted.\"" )
+			tblocker:SetText( "You must be a \"Donator.\"" )
 			tblocker:SetFont( "Reg" )
 			tblocker:SetContentAlignment( 5 )
 			tblocker:SetTextColor( Color( 255, 255, 255, 255 ) )

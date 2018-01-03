@@ -25,3 +25,4 @@ team.SetUp( 23, "T Sniper", Color( 250, 175, 0, 255 ) )
 team.SetUp( 24, "T Specialist", Color( 250, 175, 0, 255 ) )
 team.SetUp( 25, "T Juggernaut", Color( 250, 175, 0, 255 ) )
 
+// credit to TCB for Stamina reference

@@ -80,7 +80,7 @@ hook.Add( "KeyRelease", "StaminaRelease", StaminaRelease )
 
 function StaminaRegen( ply )
 	timer.Create( "StaminaGain", StaminaRegenSpeed, 0, function ( )
-		if ply:GetNWInt( "Staming" ) >= 100 then
+		if ply:GetNWInt( "Stamina" ) >= 100 then
 			return false
 		else
 			ply:SetNWInt( "Stamina", math.Clamp( ply:GetNWInt( "Stamina" ) + 2, 0, 100 ) )
@@ -131,15 +131,19 @@ function GM:PlayerInitialSpawn( ply )
 		ply:SetNWInt( "playerMoney", ply:GetPData( "playerMoney" ) )
 	end
 	
-	if ( ply:GetPData( "C4" ) == nil ) then
+	if ( tobool( ply:GetPData( "C4" ) == nil ) ) then
 		ply:SetNWBool( "C4", false )
+		ply:SetPData( "C4", false )
 	else
-		ply:SetNWBool( "C4", true )
+		ply:SetNWBool( "C4", tobool( ply:GetPData( "C4" ) ) )
+		ply:SetPData( "C4", tobool( ply:GetNWBool( "C4" ) ) )
 	end
-	if ( ply:GetPData( "Nitro" ) == nil ) then
+	if ( tobool( ply:GetPData( "Nitro" ) == nil ) ) then
 		ply:SetNWBool( "Nitro", false )
+		ply:SetPData( "Nitro", false )
 	else
-		ply:SetNWBool( "Nitro", true )
+		ply:SetNWBool( "Nitro", tobool( ply:GetPData( "Nitro" ) ) )
+		ply:SetPData( "Nitro", ply:GetNWBool( "Nitro" ) )
 	end
 	
 	ply:ConCommand( "dm_start" )
@@ -236,11 +240,13 @@ concommand.Add( "buyC4", function( sender, command, arguments )
 		elseif tonumber( money ) >= 10000 then
 			sender:SetNWInt( "playerMoney", tonumber( money ) - 10000 )
 			sender:SetNWBool( "C4", true )
+			sender:SetPData( "C4", true )
 			sender:Give( "m9k_suicide_bomb" )
 			sender:SelectWeapon( "m9k_suicide_bomb" )
 		end
 	else
 		sender:Give( "m9k_suicide_bomb" )
+		sender:SelectWeapon( "m9k_suicide_bomb" )
 	end
 end)
 
@@ -253,11 +259,13 @@ concommand.Add( "buyNitro", function( sender, command, arguments )
 		elseif tonumber( money ) >= 10000 then
 			sender:SetNWInt( "playerMoney", tonumber( money ) - 10000 )
 			sender:SetNWBool( "Nitro", true )
+			sender:SetPData( "Nitro", true )
 			sender:Give( "m9k_nitro" )
 			sender:SelectWeapon( "m9k_nitro" )
 		end
 	else
 		sender:Give( "m9k_nitro" )
+		sender:SelectWeapon( "m9k_nitro" )
 	end
 end)
 
@@ -419,7 +427,7 @@ end
 concommand.Add( "showammo", showammo )
 
 function resetall( ply )
-	if ply:IsAdmin() or ply:IsSuperAdmin() then
+	if ply:IsAdmin() or ply:IsSuperAdmin() or ply:IsUserGroup("owner") then
 		for k, v in pairs( player.GetAll() ) do
 			v:SetPData( "playerKills", 0 )
 			v:SetPData( "playerLevel", 1 )
@@ -440,8 +448,39 @@ function resetall( ply )
 end
 concommand.Add( "resetall", resetall )
 
+function resetplayer( ply, cmd, args )
+	if ply:IsAdmin() or ply:IsSuperAdmin() or ply:IsUserGroup("owner") then
+		local target = NULL
+		for k, v in pairs( player.GetAll() ) do
+			if ( string.find( string.lower( v:GetName() ), string.lower( args[1] ) ) != nil ) then
+				target = v
+				break
+			end
+		end
+		if IsValid( target ) then
+			target:SetPData( "playerKills", 0 )
+			target:SetPData( "playerLevel", 1 )
+			target:SetPData( "playerExp", 0 )
+			target:SetPData( "playerMoney", 0 )
+			target:SetPData( "C4", false )
+			target:SetPData( "Nitro", false )
+			target:SetNWInt( "playerKills", 0 )
+			target:SetNWInt( "playerLevel", 1 )
+			target:SetNWInt( "playerExp", 0 )
+			target:SetNWInt( "playerMoney", 0 )
+			target:SetNWBool( "C4", false )
+			target:SetNWBool( "Nitro", false )
+			target:StripWeapons()
+			target:Spawn()
+		else
+			print( "Couldn't find target with partial name: ", args[1] )
+		end
+	end
+end
+concommand.Add( "resetplayer", resetplayer )
+
 function setlevel( ply, cmd, args )
-	if ply:IsAdmin() or ply:IsSuperAdmin() then
+	if ply:IsAdmin() or ply:IsSuperAdmin() or ply:IsUserGroup("owner") then
 		local target = NULL
 		for k, v in pairs( player.GetAll() ) do
 			if ( string.find( string.lower( v:GetName() ), string.lower( args[1] ) ) != nil ) then
@@ -463,7 +502,7 @@ end
 concommand.Add( "setlevel", setlevel )
 
 function setteam( ply, cmd, args )
-	if ply:IsAdmin() or ply:IsSuperAdmin() then
+	if ply:IsAdmin() or ply:IsSuperAdmin() or ply:IsUserGroup("owner") then
 		local target = NULL
 		for k, v in pairs( player.GetAll() ) do
 			if ( string.find( string.lower( v:GetName() ), string.lower( args[1] ) ) != nil ) then
@@ -485,6 +524,28 @@ function setteam( ply, cmd, args )
 	end
 end
 concommand.Add( "setteam", setteam )
+
+function setmoney( ply, cmd, args )
+	if ply:IsAdmin() or ply:IsSuperAdmin() or ply:IsUserGroup("owner") then
+		local target = NULL
+		for k, v in pairs( player.GetAll() ) do
+			if ( string.find( string.lower( v:GetName() ), string.lower( args[1] ) ) != nil ) then
+				target = v
+				break
+			end
+		end
+		if IsValid( target ) then
+			if tonumber( args[2] ) > 0 then
+				target:SetNWInt( "playerMoney", args[2] )
+			else
+				print("Second argument must be greater than 0." )
+			end
+		else
+			print( "Couldn't find target with partial name: ", args[1] )
+		end
+	end
+end
+concommand.Add( "setmoney", setmoney )
 
 local teamCompCT = team.NumPlayers( 3 ) + team.NumPlayers( 4 ) + team.NumPlayers( 5 ) + team.NumPlayers( 8 ) + team.NumPlayers( 10 )
 local teamCompT = team.NumPlayers( 2 ) + team.NumPlayers( 6 ) + team.NumPlayers( 7 ) + team.NumPlayers( 9 ) + team.NumPlayers( 11 ) + team.NumPlayers( 12 )
@@ -597,37 +658,6 @@ function dm_team2_class5( ply )
 	ply:SetHealth( 300 )
 end
 concommand.Add( "dm_team2_class5", dm_team2_class5 )
-
-function resetplayer( ply, cmd, args )
-	if ply:IsAdmin() or ply:IsSuperAdmin() then
-		local target = NULL
-		for k, v in pairs( player.GetAll() ) do
-			if ( string.find( string.lower( v:GetName() ), string.lower( args[1] ) ) != nil ) then
-				target = v
-				break
-			end
-		end
-		if IsValid( target ) then
-			target:SetPData( "playerKills", 0 )
-			target:SetPData( "playerLevel", 1 )
-			target:SetPData( "playerExp", 0 )
-			target:SetPData( "playerMoney", 0 )
-			target:SetPData( "C4", false )
-			target:SetPData( "Nitro", false )
-			target:SetNWInt( "playerKills", 0 )
-			target:SetNWInt( "playerLevel", 1 )
-			target:SetNWInt( "playerExp", 0 )
-			target:SetNWInt( "playerMoney", 0 )
-			target:SetNWBool( "C4", false )
-			target:SetNWBool( "Nitro", false )
-			target:StripWeapons()
-			target:Spawn()
-		else
-			print( "Couldn't find target with partial name: ", args[1] )
-		end
-	end
-end
-concommand.Add( "resetplayer", resetplayer )
 
 
 function checkForLevel( ply )

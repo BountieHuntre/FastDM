@@ -43,7 +43,7 @@ function HUD()
 	else
 		draw.RoundedBox( 0, 5, ScrH() - 5, 250, 5, Color( 21, 80, 205, 150 ) )
 	end
-	draw.RoundedBox( 0, 10, ScrH() - 4.5, 240 * ply:GetNWInt( "Stamina" ) / 100, 2, Color( 255, 255, 0, 255 ) )
+	draw.RoundedBox( 0, 10, ScrH() - 4.5, 240 * ply:GetNWInt( "Stamina" ) / 100, 2, Color( 0, 255, 0, 255 ) )
 	
 	//weapon box
 	if ply:Team() == 1 then
