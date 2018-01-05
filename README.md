@@ -37,3 +37,4 @@ This is a gamemode for Garry's Mod that is purely Team Deathmatch.
 - New classes for regular, and donators
 - Finish switching weapon base to FA:S 2.0
 - Add attachments to the Buy Menu
+- Wipe M9K
