@@ -35,3 +35,5 @@ This is a gamemode for Garry's Mod that is purely Team Deathmatch.
 - Custom Classes
 - More items in the Buy Menu
 - New classes for regular, and donators
+- Finish switching weapon base to FA:S 2.0
+- Add attachments to the Buy Menu
