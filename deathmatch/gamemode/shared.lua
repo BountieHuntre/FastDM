@@ -26,3 +26,5 @@ team.SetUp( 24, "T Specialist", Color( 250, 175, 0, 255 ) )
 team.SetUp( 25, "T Juggernaut", Color( 250, 175, 0, 255 ) )
 
 // credit to TCB for Stamina reference
+
+// testing server name: FastDM Testing | Requires M9K

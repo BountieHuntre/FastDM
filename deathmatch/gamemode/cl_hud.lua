@@ -3,6 +3,8 @@ include( "shared.lua" )
 function HUD()
 	local ply = LocalPlayer()
 	
+	local maxLevel = 20
+	
 	if !ply:Alive() then
 		return
 	end
@@ -85,7 +87,9 @@ function HUD()
 		draw.RoundedBox( 0, 5, ScrH() - 170, 250, 65, Color( 21, 80, 205, 150 ) )
 	end
 	draw.SimpleText( ply:GetNWInt( "playerLevel" ), "BIG_T", 245, ScrH() - 165, Color( 255, 255, 255, 255 ), TEXT_ALIGN_RIGHT )
-	draw.SimpleText( "EXP: " .. ply:GetNWInt( "playerExp" ) .. " / " .. etl, "Trebuchet18", 15, ScrH() - 155, Color( 255, 255, 255, 255 ) )
+	if tonumber( ply:GetNWInt( "playerLevel" ) ) < maxLevel then
+		draw.SimpleText( "EXP: " .. ply:GetNWInt( "playerExp" ) .. " / " .. etl, "Trebuchet18", 15, ScrH() - 155, Color( 255, 255, 255, 255 ) )
+	end
 	draw.SimpleText( team.GetName( ply:Team() ), "Trebuchet18", 15, ScrH() - 130, Color( 255, 255, 255, 255 ) )
 	
 	//money

@@ -17,6 +17,8 @@ local RunDisable = 10
 local StaminaDrainSpeed = 0.01
 local StaminaRegenSpeed = 0.1
 
+local maxLevel = 20
+
 PLAYER = FindMetaTable( "Player" )
 
 function PLAYER:Unassigned()
@@ -209,6 +211,10 @@ function GM:ShowSpare1( ply )
 	ply:ConCommand( "buymenu" )
 end
 
+hook.Add( "PlayerCanHearPlayersVoice", "VoiceChat", function( listener, talker )
+	return true
+end)
+
 function GM:PlayerShouldTakeDamage( victim, pl )
 	if victim:IsPlayer() then
 		if pl:IsPlayer() then
@@ -253,7 +259,9 @@ function GM:PlayerDeath( victim, inflictor, attacker )
 	
 	if attacker != victim then
 		attacker:SetNWInt( "playerMoney", attacker:GetNWInt( "playerMoney" ) + ( 100 * ( victim:GetNWInt( "playerLevel" ) / 4 ) ) )
-		attacker:SetNWInt( "playerExp", math.ceil( attacker:GetNWInt( "playerExp" ) + ( 100 * attacker:GetNWInt( "playerLevel" ) * 0.825 ) ) )
+		if tonumber( attacker:GetNWInt( "playerLevel" ) ) < maxLevel then
+			attacker:SetNWInt( "playerExp", math.ceil( attacker:GetNWInt( "playerExp" ) + ( 100 * attacker:GetNWInt( "playerLevel" ) * 0.825 ) ) )
+		end
 		attacker:SetNWInt( "playerKills", attacker:GetNWInt( "playerKills" ) + 1 )
 	end
 	
@@ -308,10 +316,10 @@ concommand.Add( "buySticky", function( ply, cmd, args )
 	if not ply:IsValid() then return end
 	local money = ply:GetNWInt( "playerMoney" )
 	if ply:GetNWBool( "Sticky" ) != true then
-		if tonumber( money ) < 5000 then
+		if tonumber( money ) < 1000 then
 			ply:PrintMessage( HUD_PRINTTALK, "You do not have enough Money." )
-		elseif tonumber( money ) >= 5000 then
-			ply:SetNWInt( "playerMoney", tonumber( money ) - 5000 )
+		elseif tonumber( money ) >= 1000 then
+			ply:SetNWInt( "playerMoney", tonumber( money ) - 1000 )
 			ply:SetNWBool( "Sticky", true )
 			ply:SetPData( "Sticky", true )
 			ply:Give( "m9k_sticky_grenade" )
@@ -445,6 +453,8 @@ function GM:PlayerLoadout( ply )
 	end
 	
 	if ply:Team() == 8 then
+		ply:SetHealth( 300 )
+		ply:SetMaxHealth( 300 )
 		ply:Give( "m9k_minigun" )
 		ply:SetAmmo( 0, ply:GetWeapon( "m9k_minigun" ):GetPrimaryAmmoType() )
 		
@@ -466,7 +476,7 @@ function GM:PlayerLoadout( ply )
 	
 	if ply:Team() == 22 then
 		ply:Give( "m9k_1897winchester" )
-		ply:SetAmmo( 16, ply:GetWeapon( "m9k_1897winchester" ):GetPrimaryAmmoType() )
+		ply:SetAmmo( 32, ply:GetWeapon( "m9k_1897winchester" ):GetPrimaryAmmoType() )
 		
 		ply:Give( "m9k_sig_p229r" )
 		ply:SetAmmo( 48, ply:GetWeapon( "m9k_sig_p229r" ):GetPrimaryAmmoType() )
@@ -500,6 +510,8 @@ function GM:PlayerLoadout( ply )
 	end
 	
 	if ply:Team() == 25 then
+		ply:SetHealth( 300 )
+		ply:SetMaxHealth( 300 )
 		ply:Give( "m9k_minigun" )
 		ply:SetAmmo( 0, ply:GetWeapon( "m9k_minigun" ):GetPrimaryAmmoType() )
 		
@@ -522,6 +534,7 @@ function GM:PlayerDisconnected( ply )
 	ply:SetPData( "Sword", ply:GetNWBool( "Sword" ) )
 	ply:SetPData( "Machete", ply:GetNWBool( "Machete" ) )
 	ply:SetPData( "Pref", ply:GetNWBool( "Pref" ) )
+	ply:PrintMessage( HUD_PRINTTALK, ply:Nick() .. " has left the game." )
 end
 
 function GM:ShutDown()
@@ -674,7 +687,7 @@ end
 concommand.Add( "setteam", setteam )
 
 function setmoney( ply, cmd, args )
-	if ply:IsAdmin() or ply:IsSuperAdmin() or ply:IsUserGroup("owner") then
+	if ply:IsAdmin() or ply:IsSuperAdmin() or ply:IsUserGroup( "owner" ) then
 		local target = NULL
 		for k, v in pairs( player.GetAll() ) do
 			if ( string.find( string.lower( v:GetName() ), string.lower( args[1] ) ) != nil ) then
@@ -686,7 +699,7 @@ function setmoney( ply, cmd, args )
 			if tonumber( args[2] ) > 0 then
 				target:SetNWInt( "playerMoney", args[2] )
 			else
-				print("Second argument must be greater than 0." )
+				print( "Second argument must be greater than 0." )
 			end
 		else
 			print( "Couldn't find target with partial name: ", args[1] )
@@ -694,6 +707,28 @@ function setmoney( ply, cmd, args )
 	end
 end
 concommand.Add( "setmoney", setmoney )
+
+function givemoney( ply, cmd, args )
+	if ply:IsAdmin() or ply:IsSuperAdmin() or ply:IsUserGroup( "owner" ) then
+		local target = NULL
+		for k, v in pairs( player.GetAll() ) do
+			if ( string.find( string.lower( v:GetName() ), string.lower( args[1] ) ) != nil ) then
+				target = v
+				break
+			end
+		end
+		if IsValid( target ) then
+			if tonumber( args[2] ) > 0 then
+				target:SetNWInt( "playerMoney", tonumber( target:GetNWInt( "playerMoney" ) ) + args[2] )
+			else
+				print( "Second argument must be greater than 0." )
+			end
+		else
+			print( "Couldn't find target with partial name: ", args[1] )
+		end
+	end
+end
+concommand.Add( "givemoney", givemoney )
 
 local teamCompCT = team.NumPlayers( 3 ) + team.NumPlayers( 4 ) + team.NumPlayers( 5 ) + team.NumPlayers( 8 ) + team.NumPlayers( 10 )
 local teamCompT = team.NumPlayers( 2 ) + team.NumPlayers( 6 ) + team.NumPlayers( 7 ) + team.NumPlayers( 9 ) + team.NumPlayers( 11 ) + team.NumPlayers( 12 )
@@ -817,7 +852,7 @@ function checkForLevel( ply )
 		cExp = cExp - etl
 		
 		ply:SetNWInt( "playerExp", cExp )
-		ply:SetNWInt( "playerLevel", math.Clamp( cLvl + 1, 0, 50 ) )
+		ply:SetNWInt( "playerLevel", math.Clamp( cLvl + 1, 0, 20 ) )
 	end
 end
 

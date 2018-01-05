@@ -1,4 +1,4 @@
-"deathmatch"
+"FastDM"
 {
 	"base"			"base"
 	"title"			"FastDM"

@@ -20,7 +20,7 @@ weps = {
 	sticky = {
 		name = "Sticky Grenade",
 		nameS = "Sticky",
-		price = 5000,
+		price = 1000,
 		equip = "m9k_sticky_grenade",
 		material = ""
 	},
@@ -126,9 +126,11 @@ function buymenu( ply )
 		end
 		if k == 1 then
 			button[k].DoClick = function()
+				/*
 				if tframe:IsVisible() then
 					tframe:SetVisible( false )
 				end
+				*/
 				if !wframe:IsVisible() then
 					wframe:SetVisible( true )
 				else
@@ -141,11 +143,13 @@ function buymenu( ply )
 				if wframe:IsVisible() then
 					wframe:SetVisible( false )
 				end
+				/*
 				if !tframe:IsVisible() then
 					tframe:SetVisible( true )
 				else
 					tframe:SetVisible( false )
 				end
+				*/
 			end
 		end
 	end
