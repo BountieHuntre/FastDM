@@ -34,3 +34,4 @@ This is a gamemode for Garry's Mod that is purely Team Deathmatch.
 ### Features to come:
 - Custom Classes
 - More items in the Buy Menu
+- New classes for regular, and donators
