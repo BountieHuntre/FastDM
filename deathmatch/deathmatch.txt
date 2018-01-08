@@ -1,7 +1,0 @@
-"FastDM"
-{
-	"base"			"base"
-	"title"			"FastDM"
-	"maps"			"^ttt_"
-	"menusystem"	"1"
-}
