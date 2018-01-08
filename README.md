@@ -18,16 +18,9 @@ This is a gamemode for Garry's Mod that is purely Team Deathmatch.
 - Added Nitro Glycerine to Buy Menu
 - Added Sprint Stamina System!
 
-### Changelog (8/28/2017):
-- Bug fixes
-- Added **_BUY MENU_**!
-  - Accessible via the F3 key
-  - C4 is only available for purchase
-- Finished **_$$$_** system!
-
 ### Features:
 - EXP System
-- M9K Weapons
+- FA:S 2.0 Weapons with some M9K Specials
 - Standard Counter Strike: Source Models
 - Counter Terrorists and Terrorists Teams
 - Classes for each team (Assault, Sniper, Medic, etc.)
