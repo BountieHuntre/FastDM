@@ -1,6 +1,13 @@
 ## FastDM
 This is a gamemode for Garry's Mod that is purely Team Deathmatch.
 
+### Changelog (1/7/2018):
+- Bug fixes
+  - there was a problem where respawning with left-click would shoot the equipped weapon while spawning, changed it to only respawn **when the player presses the jumb button**.
+- Changed weapon base to FA:S 2.0
+- Added Attachments to the buy menu
+- Made coding more efficient
+
 ### Changelog (1/3/2018):
 - Bug fixes
 - Added Damascus Sword, Sticky Grenade, and Nerve Gas to Buy Menu
@@ -35,6 +42,3 @@ This is a gamemode for Garry's Mod that is purely Team Deathmatch.
 - Custom Classes
 - More items in the Buy Menu
 - New classes for regular, and donators
-- Finish switching weapon base to FA:S 2.0
-- Add attachments to the Buy Menu
-- Wipe M9K
